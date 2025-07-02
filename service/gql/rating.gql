@@ -1,0 +1,26 @@
+query GetRatingById($id: ID!) {
+  getRatingById(id: $id) {
+    id
+    quality
+    service
+    overall
+    comment
+    createdAt
+  }
+}
+
+query GetRatingsByUser($userId: ID!) {
+  getRatingsByUser(userId: $userId) {
+    id
+    quality
+    service
+    overall
+    comment
+  }
+}
+
+mutation CreateRating($input: CreateRatingInput!) {
+  createRating(input: $input) {
+    id
+  }
+}

@@ -1,0 +1,17 @@
+mutation CreatePreferences($input: CreatePreferencesInput!) {
+  createPreferences(input: $input) {
+    status {
+      status
+      errorMessage
+    }
+    data {
+      id
+      userId
+      drinkType
+      sweetenerType
+      sugarAmount
+      milkStrength
+      notes
+    }
+  }
+}

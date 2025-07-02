@@ -2,11 +2,13 @@
   "files.associations": {
     "*.css": "tailwindcss"
   },
-  "tailwindCSS.classAttributes": [
-    "class",
-    "className",
-    "theme"
-  ],
+  "tailwindCSS.classAttributes": ["class", "className", "theme"],
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "always",
+    "source.fixAll.eslint": "always"
+  },
+  "eslint.validate": ["javascript", "typescript", "typescriptreact"],
   "tailwindCSS.experimental.classRegex": [
     [
       "twMerge\\(([^)]*)\\)",

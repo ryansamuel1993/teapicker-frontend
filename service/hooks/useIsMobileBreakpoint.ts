@@ -1,7 +1,6 @@
-import { useBreakpoint } from "./useBreakpoint";
-
-const DESKTOP_BREAKPOINT = 'md';
+import { DESKTOP_BREAKPOINT } from '../constants/breakpoints';
+import { useBreakpoint } from './useBreakpoint';
 
 export const useIsMobileBreakpoint = () => {
-  return useBreakpoint(DESKTOP_BREAKPOINT);
+  return !useBreakpoint(DESKTOP_BREAKPOINT);
 };

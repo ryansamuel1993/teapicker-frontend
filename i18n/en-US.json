@@ -1,0 +1,11 @@
+{
+  "Common": {},
+  "Team": {
+    "loadingFail": "Failed to load teams. Please try again later",
+    "noMembers": "No members assigned yet."
+  },
+  "User": {
+    "email": "Email",
+    "contact": "Contact"
+  }
+}

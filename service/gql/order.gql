@@ -1,0 +1,57 @@
+query AllOrders {
+  getAllOrders {
+    id
+    createdAt
+    completed
+    orderType
+    userId
+    teamId
+    notes
+  }
+}
+
+query Order($orderId: ID!) {
+  getOrder(id: $orderId) {
+    id
+    createdAt
+    completed
+    orderType
+    notes
+    userId
+    teamId
+    ratings {
+      id
+      quality
+      service
+      overall
+      comment
+    }
+    items {
+      id
+      quantity
+      item {
+        id
+        name
+        price
+      }
+    }
+  }
+}
+
+mutation CreateOrder($input: CreateOrderInput!) {
+  createOrder(input: $input) {
+    status {
+      errorMessage
+      status
+    }
+    data {
+      orderType
+      userId
+      notes
+      items {
+        id
+        quantity
+      }
+    }
+  }
+}

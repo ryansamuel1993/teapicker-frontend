@@ -1,0 +1,45 @@
+query GetUserById($userId: ID!) {
+  getUserById(userId: $userId) {
+    id
+    name
+    email
+    contactNumber
+    media {
+      id
+      url
+      type
+      alt
+      createdAt
+    }
+  }
+}
+
+query GetAllUsers {
+  getAllUsers {
+    id
+    name
+    email
+    contactNumber
+    media {
+      id
+      url
+      type
+      alt
+      createdAt
+    }
+  }
+}
+
+mutation CreateUser($input: CreateUserInput!) {
+  createUser(input: $input) {
+    id
+    name
+  }
+}
+
+mutation UpdateUser($input: UpdateUserInput!) {
+  updateUser(input: $input) {
+    id
+    name
+  }
+}

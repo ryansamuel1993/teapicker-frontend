@@ -1,3 +1,4 @@
+export const DESKTOP_BREAKPOINT = 'md';
 export const breakpoints = {
   sm: '640px',
   md: '768px',
