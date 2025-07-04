@@ -1,16 +1,14 @@
-'use client';
-
-import { useMemo, useCallback, ReactNode, useState, createContext } from 'react';
+import { createContext, useState, useMemo, ReactNode, useCallback } from 'react';
 import { User } from '../types/user';
 
 export interface ICurrentUserContext {
   currentUser: User | null;
-  setCurrentUser: (authToken: string) => void;
+  setCurrentUser: (user: User) => void;
   removeCurrentUser: () => void;
 }
 
 type CurrentUserProviderProps = {
-  initialUser: User | null;
+  initialUser?: User | null;
   children: ReactNode;
 };
 
@@ -20,19 +18,31 @@ export const CurrentUserContext = createContext<ICurrentUserContext>({
   removeCurrentUser: () => {},
 });
 
-export const CurrentUserProvider = ({ children, initialUser }: CurrentUserProviderProps) => {
-  const [user, setUser] = useState<User | null>(initialUser);
+const STORAGE_KEY = 'currentUser';
 
-  const setCurrentUser = useCallback(() => {
-    setUser(user);
-  }, [user]);
+export const CurrentUserProvider = ({ children, initialUser = null }: CurrentUserProviderProps) => {
+  const [user, setUser] = useState<User | null>(() => {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+
+      return stored ? JSON.parse(stored) : initialUser;
+    } catch {
+      return initialUser;
+    }
+  });
+
+  const setCurrentUser = useCallback((newUser: User) => {
+    setUser(newUser);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(newUser));
+  }, []);
 
   const removeCurrentUser = useCallback(() => {
     setUser(null);
-  }, [setUser]);
+    localStorage.removeItem(STORAGE_KEY);
+  }, []);
 
-  const ctx = useMemo(
-    (): ICurrentUserContext => ({
+  const contextValue = useMemo(
+    () => ({
       currentUser: user,
       setCurrentUser,
       removeCurrentUser,
@@ -40,5 +50,5 @@ export const CurrentUserProvider = ({ children, initialUser }: CurrentUserProvid
     [user, setCurrentUser, removeCurrentUser],
   );
 
-  return <CurrentUserContext.Provider value={ctx}>{children}</CurrentUserContext.Provider>;
+  return <CurrentUserContext.Provider value={contextValue}>{children}</CurrentUserContext.Provider>;
 };

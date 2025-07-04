@@ -1,5 +1,3 @@
-'use client';
-
 import { Carousel as FlowbiteCarousel } from 'flowbite-react';
 import { ResponsiveImage } from './ResponsiveImage';
 import { UserMedia } from '@/service/types/user';
@@ -46,13 +44,7 @@ export const Carousel = ({ images }: CarouselProps) => {
     <FlowbiteCarousel theme={customTheme}>
       {images.map((image) => (
         <div key={image.id} className="w-full">
-          <ResponsiveImage
-            image={{
-              id: image.id,
-              url: image.url,
-              visible: true,
-            }}
-          />
+          <ResponsiveImage image={image} />
         </div>
       ))}
     </FlowbiteCarousel>

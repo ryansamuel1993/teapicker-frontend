@@ -1,0 +1,14 @@
+fragment userFragment on User {
+  id
+  name
+  email
+  contactNumber
+  media {
+    id
+    url
+    type
+    alt
+    createdAt
+    userId
+  }
+}

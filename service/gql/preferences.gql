@@ -1,4 +1,4 @@
-mutation CreatePreferences($input: CreatePreferencesInput!) {
+mutation CreatePreferences($input: CreatePreferencesInput) {
   createPreferences(input: $input) {
     status {
       status

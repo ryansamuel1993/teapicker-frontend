@@ -2,7 +2,7 @@
 
 import { ReactNode } from 'react';
 import { NextIntlClientProvider } from 'next-intl';
-import en from 'i18n/en-US.json';
+import en from './messages/en-US.json';
 
 const NextIntlProvider = ({ children }: { children: ReactNode }) => {
   return (

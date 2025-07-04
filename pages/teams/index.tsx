@@ -1,18 +1,39 @@
-import { Alert } from 'flowbite-react';
+import { useState, useCallback } from 'react';
+import { useRouter } from 'next/router';
 import { BaseLayout } from '@/components/layouts/BaseLayout/BaseLayout';
-import { useTeams } from '@/service/hooks/useTeams';
-import { TeamList } from '@/components/teams/TeamList';
-import { LoadingSpinner } from '@/components/Spinner';
+import { PlayButton } from '@/components/button/PlayButtons';
+import { TeamModal } from '@/components/modals/TeamModal';
+import { useTeams } from '@/service/hooks/useTeam';
+import { Team } from '@/service/types/team';
 
 const Page = () => {
-  const { teams, loading, error } = useTeams();
+  const { teams, isLoading } = useTeams();
+  const router = useRouter();
+
+  const [isTeamModalOpen, setIsTeamModalOpen] = useState(true);
+
+  const handleTeamSelect = useCallback(
+    (selectedTeam: Team) => {
+      if (selectedTeam) {
+        setIsTeamModalOpen(false);
+        router.push(`/users/${selectedTeam.id}`);
+      }
+    },
+    [router],
+  );
 
   return (
     <BaseLayout>
-      <BaseLayout.MainContent className="flex flex-col items-center justify-start min-h-screen p-4">
-        {loading && <LoadingSpinner />}
-        {error && <Alert color="failure">Failed to load teams. Please try again later.{error.message}</Alert>}
-        {!loading && !error && <TeamList teams={teams} />}
+      <BaseLayout.MainContent className="flex flex-col items-center justify-center min-h-screen p-4">
+        <PlayButton setIsOpen={setIsTeamModalOpen} />
+
+        <TeamModal
+          isOpen={isTeamModalOpen}
+          setIsOpen={setIsTeamModalOpen}
+          teams={teams}
+          onSelect={handleTeamSelect}
+          isLoading={isLoading}
+        />
       </BaseLayout.MainContent>
     </BaseLayout>
   );

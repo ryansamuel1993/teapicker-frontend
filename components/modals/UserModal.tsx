@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Button } from 'flowbite-react';
 import classNames from 'classnames';
 import Modal from '@/components/Modal';
@@ -6,38 +5,44 @@ import { User } from '@/service/types/user';
 
 type UserModalProps = {
   isOpen: boolean;
-  onIsOpenChange: (state: boolean) => void;
-  users: User[];
-  selectedUserId?: string;
-  onSelect: (UserId: string) => void;
+  setIsOpen: (state: boolean) => void;
+  users: User[] | undefined;
+  onSelect: (user: User) => void;
 };
 
-export const UserModal = ({ isOpen, onIsOpenChange, users, selectedUserId, onSelect }: UserModalProps) => {
-  const [hoveredUserId, setHoveredUserId] = useState<string | null>(null);
-
-  const handleSelect = (userId: string) => {
-    onSelect(userId);
-    onIsOpenChange(false);
+export const UserModal = ({ isOpen, setIsOpen, users, onSelect }: UserModalProps) => {
+  const handleSelect = (user: User) => {
+    onSelect(user);
+    setIsOpen(false);
   };
 
   return (
-    <Modal isOpen={isOpen} onIsOpenChange={onIsOpenChange} title="Select a User" size="md" bodyClassName="space-y-3">
+    <Modal
+      withCloseButton={false}
+      isOpen={isOpen}
+      setIsOpen={setIsOpen}
+      title="Select a User"
+      contentClassName="h-3/4 p-0"
+      size="xl"
+      bodyClassName="space-y-3"
+    >
       <div className="flex flex-col gap-2">
-        {users.map((user) => (
-          <Button
-            key={user.id}
-            color={selectedUserId === user.id ? 'dark' : 'gray'}
-            className={classNames('w-full justify-start text-left hover:bg-gray-800 transition-all', {
-              'bg-gray-800 text-white': selectedUserId === user.id,
-              'border border-white/20': hoveredUserId === user.id,
-            })}
-            onMouseEnter={() => setHoveredUserId(user.id)}
-            onMouseLeave={() => setHoveredUserId(null)}
-            onClick={() => handleSelect(user.id)}
-          >
-            {user.name}
-          </Button>
-        ))}
+        {users && users.length > 0 ? (
+          users.map((user) => (
+            <Button
+              key={user.id}
+              color="gray"
+              className={classNames(
+                'w-full justify-start text-left transition-all border border-transparent hover:bg-gray-800 hover:text-white',
+              )}
+              onClick={() => handleSelect(user)}
+            >
+              {user.name}
+            </Button>
+          ))
+        ) : (
+          <p className="text-sm italic text-gray-400">No users available.</p>
+        )}
       </div>
     </Modal>
   );

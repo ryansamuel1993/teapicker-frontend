@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { Notification } from '../types/notifcations';
 
 export const useNotifications = () => {
-  const [notifications] = useState<Notification[]>([
+  const [notifications, setNotifications] = useState<Notification[]>([
     {
       id: 'notif-1',
       title: 'New Message',
       message: 'You have a new message from Alex.',
-      createdAt: new Date(Date.now() - 1000 * 60 * 5), // 5 mins ago
+      createdAt: new Date(Date.now() - 1000 * 60 * 5),
       isRead: false,
     },
     {
@@ -26,5 +26,14 @@ export const useNotifications = () => {
     },
   ]);
 
-  return notifications;
+  const handleNotification = () => {
+    setNotifications((prev) =>
+      prev.map((notification) => ({
+        ...notification,
+        isRead: true,
+      })),
+    );
+  };
+
+  return { notifications, handleNotification };
 };

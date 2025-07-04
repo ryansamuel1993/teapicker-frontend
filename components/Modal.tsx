@@ -1,16 +1,18 @@
-import { FC, ReactNode, useEffect, useState } from 'react';
+import { FC, ReactNode } from 'react';
 import { Modal as FBModal, ModalSizes, ModalBody, ModalFooter, ModalHeader } from 'flowbite-react';
 import classNames from 'classnames';
+import { DynamicStringEnumKeysOf } from 'flowbite-react/types';
 import { Divider } from './Divider';
+import BackButton from './button/BackButton';
 import { useIsMobileBreakpoint } from '@/service/hooks/useIsMobileBreakpoint';
 
 interface ModalProps {
   isOpen: boolean;
-  onIsOpenChange: (state: boolean) => void;
+  setIsOpen: (state: boolean) => void;
   title?: string | ReactNode;
   children: ReactNode;
   actions?: ReactNode;
-  size?: keyof ModalSizes;
+  size?: DynamicStringEnumKeysOf<ModalSizes>;
   hasDivider?: boolean;
   bodyClassName?: string;
   noBodyPadding?: boolean;
@@ -23,7 +25,8 @@ interface ModalProps {
   contentInnerClassName?: string;
   withCloseButton?: boolean;
   bgTransparent?: boolean;
-  'data-testid'?: string;
+  footerClassName?: string;
+  showBackButton?: boolean; // 👈 new prop
 }
 
 const theme = ({
@@ -35,18 +38,9 @@ const theme = ({
   contentClassName,
   withCloseButton = true,
   bgTransparent,
+  footerClassName,
   contentInnerClassName,
-}: {
-  noBodyPadding?: boolean;
-  fullHeight?: boolean;
-  confirmation?: boolean;
-  bodyClassName?: string;
-  headerClassName?: string;
-  contentClassName?: string;
-  withCloseButton?: boolean;
-  bgTransparent?: boolean;
-  contentInnerClassName?: string;
-} = {}) => {
+}: Partial<ModalProps>) => {
   return {
     root: {
       base: 'fixed inset-x-0 top-0 z-50 h-screen overflow-y-auto overflow-x-hidden md:inset-0 md:h-full',
@@ -85,12 +79,14 @@ const theme = ({
       popup: 'border-b-0 p-2',
       title: 'text-body font-medium text-white',
       close: {
-        base: `ml-auto inline-flex items-center rounded-3xl bg-transparent p-1.5 text-sm text-white hover:bg-gray-200 hover:text-gray-900 ${!withCloseButton && 'hidden'}`,
+        base: `ml-auto inline-flex items-center rounded-3xl bg-transparent p-1.5 text-sm text-white hover:bg-gray-200 hover:text-gray-900 ${
+          !withCloseButton && 'hidden'
+        }`,
         icon: 'size-4',
       },
     },
     footer: {
-      base: 'flex items-center space-x-2 rounded-b border-gray-200 p-6',
+      base: classNames('flex items-center space-x-2 rounded-b border-gray-200 p-6', footerClassName),
       popup: 'border-t-3xl',
     },
   };
@@ -98,7 +94,7 @@ const theme = ({
 
 const Modal: FC<ModalProps> = ({
   isOpen,
-  onIsOpenChange,
+  setIsOpen,
   title,
   children,
   actions,
@@ -114,27 +110,22 @@ const Modal: FC<ModalProps> = ({
   contentClassName,
   withCloseButton,
   bgTransparent,
+  footerClassName,
   contentInnerClassName,
-  'data-testid': dataTestId,
+  showBackButton = true,
 }) => {
-  const [root, setRoot] = useState<HTMLElement | undefined>();
-
   const isMobile = useIsMobileBreakpoint();
 
-  useEffect(() => {
-    const el = document.querySelector('main');
-
-    if (el) {
-      setRoot(el);
-    }
-  }, []);
+  const handleClose = () => {
+    setIsOpen(false);
+  };
 
   return (
     <FBModal
       dismissible
       show={isOpen}
-      onClose={() => onIsOpenChange(false)}
-      data-testid={dataTestId}
+      popup={false}
+      onClose={handleClose}
       theme={theme({
         bodyClassName,
         confirmation,
@@ -144,12 +135,21 @@ const Modal: FC<ModalProps> = ({
         contentClassName,
         withCloseButton,
         bgTransparent,
+        footerClassName,
         contentInnerClassName,
       })}
-      size={isMobile ? 'md' : (size as string)}
-      root={root}
+      size={isMobile ? 'md' : size}
     >
-      {!withoutHeader && <ModalHeader className="text-center">{title}</ModalHeader>}
+      {!withoutHeader && (
+        <ModalHeader className="relative flex items-center justify-center text-center">
+          {showBackButton && (
+            <div className="absolute -translate-y-1/2 left-4 top-1/2">
+              <BackButton />
+            </div>
+          )}
+          {title}
+        </ModalHeader>
+      )}
       <ModalBody style={{ maxHeight: bodyMaxHeight, top: '100px' }}>{children}</ModalBody>
       {hasDivider && <Divider className="mb-0" />}
       {!!actions && <ModalFooter>{actions}</ModalFooter>}

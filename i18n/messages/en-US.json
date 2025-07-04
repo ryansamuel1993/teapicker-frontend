@@ -1,0 +1,38 @@
+{
+  "Common": {
+
+    "title": "Brew buddy"
+  },
+  "Team": {
+    "loadingFail": "Failed to load teams. Please try again later",
+    "noMembers": "No members assigned yet."
+  },
+  "User": {
+    "email": "Email",
+    "contact": "Contact"
+  },
+  "Profile": {
+    "title": "User Profile",
+    "noImage": "No Image",
+    "noEmail": "No email provided",
+    "noContact": "No contact number",
+    "UserAlt": "{{name}}'s User"
+  },
+  "Signup": {
+    "title": "Create an Account",
+    "name": "Full Name",
+    "namePlaceholder": "Jane Doe",
+    "email": "Email Address",
+    "emailPlaceholder": "you@example.com",
+    "contactNumberPlaceholder": "Your contact number",
+    "submit": "Sign Up",
+    "createUserError": "Email or name already in use",
+    "validation": {
+      "nameRequired": "Name is required.",
+      "emailRequired": "Email is required.",
+      "emailInvalid": "Please enter a valid email address.",
+      "contactRequired": "Contact number is required.",
+      "contactInvalid": "Contact number is too short."
+    }
+  }
+}

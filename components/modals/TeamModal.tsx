@@ -1,39 +1,46 @@
-import { useState } from 'react';
 import { Button } from 'flowbite-react';
 import classNames from 'classnames';
+import { LoadingSpinner } from '../Spinner';
 import Modal from '@/components/Modal';
 import { Team } from '@/service/types/team';
 
 type TeamModalProps = {
   isOpen: boolean;
-  onIsOpenChange: (state: boolean) => void;
+  setIsOpen: (state: boolean) => void;
   teams: Team[];
-  selectedTeamId?: string;
-  onSelect: (teamId: string) => void;
+  selectedTeam?: Team;
+  isLoading: boolean;
+  onSelect: (team: Team) => void;
 };
 
-export const TeamModal = ({ isOpen, onIsOpenChange, teams, selectedTeamId, onSelect }: TeamModalProps) => {
-  const [hoveredTeamId, setHoveredTeamId] = useState<string | null>(null);
-
-  const handleSelect = (teamId: string) => {
-    onSelect(teamId);
-    onIsOpenChange(false);
+export const TeamModal = ({ isOpen, setIsOpen, teams, selectedTeam, onSelect, isLoading }: TeamModalProps) => {
+  const handleSelect = (team: Team) => {
+    onSelect(team);
+    setIsOpen(false);
   };
 
   return (
-    <Modal isOpen={isOpen} onIsOpenChange={onIsOpenChange} title="Select a Team" size="md" bodyClassName="space-y-3">
+    <Modal
+      withCloseButton={false}
+      isOpen={isOpen}
+      setIsOpen={setIsOpen}
+      title="Select a Team"
+      size="md"
+      bodyClassName="space-y-3"
+    >
+      {isLoading && <LoadingSpinner />}
       <div className="flex flex-col gap-2">
         {teams.map((team) => (
           <Button
             key={team.id}
-            color={selectedTeamId === team.id ? 'dark' : 'gray'}
-            className={classNames('w-full justify-start text-left hover:bg-gray-800 transition-all', {
-              'bg-gray-800 text-white': selectedTeamId === team.id,
-              'border border-white/20': hoveredTeamId === team.id,
-            })}
-            onMouseEnter={() => setHoveredTeamId(team.id)}
-            onMouseLeave={() => setHoveredTeamId(null)}
-            onClick={() => handleSelect(team.id)}
+            color={selectedTeam === team ? 'dark' : 'gray'}
+            className={classNames(
+              'w-full justify-start text-left transition-all hover:bg-gray-800 border border-transparent',
+              {
+                'bg-gray-800 text-white border-white/20': selectedTeam === team,
+              },
+            )}
+            onClick={() => handleSelect(team)}
           >
             {team.name}
           </Button>

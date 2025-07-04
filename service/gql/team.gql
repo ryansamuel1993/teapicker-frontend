@@ -1,19 +1,27 @@
+#import "./fragments/user.gql"
+
 query GetAllTeams {
   getAllTeams {
     id
     name
     members {
-      id
-      name
-      email
-      teamId
+      ...userFragment
     }
   }
 }
 
 mutation CreateTeam($input: CreateTeamInput!) {
   createTeam(input: $input) {
-    id
-    name
+    data {
+      id
+      name
+      members {
+        ...userFragment
+      }
+    }
+    status {
+      errorMessage
+      status
+    }
   }
 }

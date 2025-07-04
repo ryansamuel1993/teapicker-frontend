@@ -15,8 +15,12 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
-  BigInt: { input: any; output: any; }
   Date: { input: any; output: any; }
+};
+
+export type CheckUserExistsInput = {
+  email?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type CreateOrderInput = {
@@ -62,12 +66,18 @@ export type CreateRatingResponse = {
 };
 
 export type CreateTeamInput = {
+  members?: InputMaybe<Array<InputMaybe<CreateUserInput>>>;
   name: Scalars['String']['input'];
-  user?: InputMaybe<Array<InputMaybe<CreateUserInput>>>;
+};
+
+export type CreateTeamResponse = {
+  __typename?: 'CreateTeamResponse';
+  data?: Maybe<Team>;
+  status?: Maybe<ResponseStatus>;
 };
 
 export type CreateUserInput = {
-  contactNumber?: InputMaybe<Scalars['BigInt']['input']>;
+  contactNumber?: InputMaybe<Scalars['String']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
   teamId?: InputMaybe<Scalars['String']['input']>;
@@ -75,7 +85,7 @@ export type CreateUserInput = {
 
 export type CreateUserResponse = {
   __typename?: 'CreateUserResponse';
-  data?: Maybe<Array<Maybe<User>>>;
+  data?: Maybe<User>;
   status?: Maybe<ResponseStatus>;
 };
 
@@ -95,6 +105,13 @@ export type Item = {
   price: Scalars['Float']['output'];
 };
 
+export enum MediaType {
+  Avatar = 'AVATAR',
+  Cover = 'COVER',
+  Gallery = 'GALLERY',
+  Video = 'VIDEO'
+}
+
 export enum MilkStrength {
   Liight = 'LIIGHT',
   Medium = 'MEDIUM',
@@ -105,12 +122,12 @@ export enum MilkStrength {
 export type Mutation = {
   __typename?: 'Mutation';
   createOrder: CreateOrderResponse;
-  createPreferences: CreatePreferencesResponse;
+  createPreferences?: Maybe<CreatePreferencesResponse>;
   createRating: Rating;
-  createTeam: Team;
-  createUser?: Maybe<User>;
-  updatePreferences: UpdatePreferencesResponse;
-  updateUser?: Maybe<User>;
+  createTeam?: Maybe<CreateTeamResponse>;
+  createUser: CreateUserResponse;
+  updatePreferences?: Maybe<UpdatePreferencesResponse>;
+  updateUser?: Maybe<UpdateUserResponse>;
 };
 
 
@@ -120,7 +137,7 @@ export type MutationCreateOrderArgs = {
 
 
 export type MutationCreatePreferencesArgs = {
-  input: CreatePreferencesInput;
+  input?: InputMaybe<CreatePreferencesInput>;
 };
 
 
@@ -135,12 +152,12 @@ export type MutationCreateTeamArgs = {
 
 
 export type MutationCreateUserArgs = {
-  input?: InputMaybe<CreateUserInput>;
+  input: CreateUserInput;
 };
 
 
 export type MutationUpdatePreferencesArgs = {
-  input: CreatePreferencesInput;
+  input?: InputMaybe<CreatePreferencesInput>;
 };
 
 
@@ -182,10 +199,10 @@ export type Preferences = {
   __typename?: 'Preferences';
   drinkType: DrinkType;
   id: Scalars['ID']['output'];
-  milkStrength: MilkStrength;
+  milkStrength?: Maybe<MilkStrength>;
   notes?: Maybe<Scalars['String']['output']>;
-  sugarAmount: Scalars['Int']['output'];
-  sweetenerType: SweetenerType;
+  sugarAmount?: Maybe<Scalars['Int']['output']>;
+  sweetenerType?: Maybe<SweetenerType>;
   userId: Scalars['ID']['output'];
 };
 
@@ -265,7 +282,7 @@ export type UpdatePreferencesResponse = {
 };
 
 export type UpdateUserInput = {
-  contactNumber?: InputMaybe<Scalars['BigInt']['input']>;
+  contactNumber?: InputMaybe<Scalars['String']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   id: Scalars['ID']['input'];
   mediaId?: InputMaybe<Scalars['ID']['input']>;
@@ -281,10 +298,10 @@ export type UpdateUserResponse = {
 
 export type User = {
   __typename?: 'User';
-  contactNumber?: Maybe<Scalars['BigInt']['output']>;
+  contactNumber?: Maybe<Scalars['String']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
-  media: Array<UserMedia>;
+  media?: Maybe<Array<Maybe<UserMedia>>>;
   name: Scalars['String']['output'];
   teamId?: Maybe<Scalars['String']['output']>;
 };
@@ -294,10 +311,12 @@ export type UserMedia = {
   alt?: Maybe<Scalars['String']['output']>;
   createdAt?: Maybe<Scalars['Date']['output']>;
   id: Scalars['ID']['output'];
-  type?: Maybe<Scalars['String']['output']>;
+  type: MediaType;
   url: Scalars['String']['output'];
   userId: Scalars['ID']['output'];
 };
+
+export type UserFragmentFragment = { __typename?: 'User', id: string, name: string, email?: string, contactNumber?: string, media?: Array<{ __typename?: 'UserMedia', id: string, url: string, type: MediaType, alt?: string, createdAt?: any, userId: string }> };
 
 export type AllOrdersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -319,11 +338,11 @@ export type CreateOrderMutationVariables = Exact<{
 export type CreateOrderMutation = { __typename?: 'Mutation', createOrder: { __typename?: 'CreateOrderResponse', status?: { __typename?: 'ResponseStatus', errorMessage?: string, status: string }, data?: { __typename?: 'Order', orderType?: OrderType, userId?: string, notes?: string, items: Array<{ __typename?: 'OrderItem', id: string, quantity: number }> } } };
 
 export type CreatePreferencesMutationVariables = Exact<{
-  input: CreatePreferencesInput;
+  input?: InputMaybe<CreatePreferencesInput>;
 }>;
 
 
-export type CreatePreferencesMutation = { __typename?: 'Mutation', createPreferences: { __typename?: 'CreatePreferencesResponse', status: { __typename?: 'ResponseStatus', status: string, errorMessage?: string }, data?: { __typename?: 'Preferences', id: string, userId: string, drinkType: DrinkType, sweetenerType: SweetenerType, sugarAmount: number, milkStrength: MilkStrength, notes?: string } } };
+export type CreatePreferencesMutation = { __typename?: 'Mutation', createPreferences?: { __typename?: 'CreatePreferencesResponse', status: { __typename?: 'ResponseStatus', status: string, errorMessage?: string }, data?: { __typename?: 'Preferences', id: string, userId: string, drinkType: DrinkType, sweetenerType?: SweetenerType, sugarAmount?: number, milkStrength?: MilkStrength, notes?: string } } };
 
 export type GetRatingByIdQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -346,45 +365,60 @@ export type CreateRatingMutationVariables = Exact<{
 
 export type CreateRatingMutation = { __typename?: 'Mutation', createRating: { __typename?: 'Rating', id: string } };
 
-export type GetUserByIdQueryVariables = Exact<{
-  userId: Scalars['ID']['input'];
-}>;
-
-
-export type GetUserByIdQuery = { __typename?: 'Query', getUserById?: { __typename?: 'User', id: string, name: string, email?: string, contactNumber?: any, media: Array<{ __typename?: 'UserMedia', id: string, url: string, type?: string, alt?: string, createdAt?: any }> } };
-
-export type GetAllUsersQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetAllUsersQuery = { __typename?: 'Query', getAllUsers?: Array<{ __typename?: 'User', id: string, name: string, email?: string, contactNumber?: any, media: Array<{ __typename?: 'UserMedia', id: string, url: string, type?: string, alt?: string, createdAt?: any }> }> };
-
-export type CreateUserMutationVariables = Exact<{
-  input: CreateUserInput;
-}>;
-
-
-export type CreateUserMutation = { __typename?: 'Mutation', createUser?: { __typename?: 'User', id: string, name: string } };
-
-export type UpdateUserMutationVariables = Exact<{
-  input: UpdateUserInput;
-}>;
-
-
-export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'User', id: string, name: string } };
-
 export type GetAllTeamsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllTeamsQuery = { __typename?: 'Query', getAllTeams?: Array<{ __typename?: 'Team', id: string, name: string, members?: Array<{ __typename?: 'User', id: string, name: string, email?: string, teamId?: string }> }> };
+export type GetAllTeamsQuery = { __typename?: 'Query', getAllTeams?: Array<{ __typename?: 'Team', id: string, name: string, members?: Array<{ __typename?: 'User', id: string, name: string, email?: string, contactNumber?: string, media?: Array<{ __typename?: 'UserMedia', id: string, url: string, type: MediaType, alt?: string, createdAt?: any, userId: string }> }> }> };
 
 export type CreateTeamMutationVariables = Exact<{
   input: CreateTeamInput;
 }>;
 
 
-export type CreateTeamMutation = { __typename?: 'Mutation', createTeam: { __typename?: 'Team', id: string, name: string } };
+export type CreateTeamMutation = { __typename?: 'Mutation', createTeam?: { __typename?: 'CreateTeamResponse', data?: { __typename?: 'Team', id: string, name: string, members?: Array<{ __typename?: 'User', id: string, name: string, email?: string, contactNumber?: string, media?: Array<{ __typename?: 'UserMedia', id: string, url: string, type: MediaType, alt?: string, createdAt?: any, userId: string }> }> }, status?: { __typename?: 'ResponseStatus', errorMessage?: string, status: string } } };
+
+export type GetUserByIdQueryVariables = Exact<{
+  userId: Scalars['ID']['input'];
+}>;
 
 
+export type GetUserByIdQuery = { __typename?: 'Query', getUserById?: { __typename?: 'User', id: string, name: string, email?: string, contactNumber?: string, media?: Array<{ __typename?: 'UserMedia', id: string, url: string, type: MediaType, alt?: string, createdAt?: any, userId: string }> } };
+
+export type GetAllUsersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllUsersQuery = { __typename?: 'Query', getAllUsers?: Array<{ __typename?: 'User', id: string, name: string, email?: string, contactNumber?: string, media?: Array<{ __typename?: 'UserMedia', id: string, url: string, type: MediaType, alt?: string, createdAt?: any, userId: string }> }> };
+
+export type CreateUserMutationVariables = Exact<{
+  input: CreateUserInput;
+}>;
+
+
+export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'CreateUserResponse', data?: { __typename?: 'User', id: string, name: string, email?: string, contactNumber?: string, media?: Array<{ __typename?: 'UserMedia', id: string, url: string, type: MediaType, alt?: string, createdAt?: any, userId: string }> }, status?: { __typename?: 'ResponseStatus', errorMessage?: string, status: string } } };
+
+export type UpdateUserMutationVariables = Exact<{
+  input: UpdateUserInput;
+}>;
+
+
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'UpdateUserResponse', data?: { __typename?: 'User', id: string, name: string, email?: string, contactNumber?: string, media?: Array<{ __typename?: 'UserMedia', id: string, url: string, type: MediaType, alt?: string, createdAt?: any, userId: string }> }, status?: { __typename?: 'ResponseStatus', errorMessage?: string, status: string } } };
+
+export const UserFragmentFragmentDoc = gql`
+    fragment userFragment on User {
+  id
+  name
+  email
+  contactNumber
+  media {
+    id
+    url
+    type
+    alt
+    createdAt
+    userId
+  }
+}
+    `;
 export const AllOrdersDocument = gql`
     query AllOrders {
   getAllOrders {
@@ -538,7 +572,7 @@ export type CreateOrderMutationHookResult = ReturnType<typeof useCreateOrderMuta
 export type CreateOrderMutationResult = Apollo.MutationResult<CreateOrderMutation>;
 export type CreateOrderMutationOptions = Apollo.BaseMutationOptions<CreateOrderMutation, CreateOrderMutationVariables>;
 export const CreatePreferencesDocument = gql`
-    mutation CreatePreferences($input: CreatePreferencesInput!) {
+    mutation CreatePreferences($input: CreatePreferencesInput) {
   createPreferences(input: $input) {
     status {
       status
@@ -704,23 +738,99 @@ export function useCreateRatingMutation(baseOptions?: Apollo.MutationHookOptions
 export type CreateRatingMutationHookResult = ReturnType<typeof useCreateRatingMutation>;
 export type CreateRatingMutationResult = Apollo.MutationResult<CreateRatingMutation>;
 export type CreateRatingMutationOptions = Apollo.BaseMutationOptions<CreateRatingMutation, CreateRatingMutationVariables>;
-export const GetUserByIdDocument = gql`
-    query GetUserById($userId: ID!) {
-  getUserById(userId: $userId) {
+export const GetAllTeamsDocument = gql`
+    query GetAllTeams {
+  getAllTeams {
     id
     name
-    email
-    contactNumber
-    media {
-      id
-      url
-      type
-      alt
-      createdAt
+    members {
+      ...userFragment
     }
   }
 }
-    `;
+    ${UserFragmentFragmentDoc}`;
+
+/**
+ * __useGetAllTeamsQuery__
+ *
+ * To run a query within a React component, call `useGetAllTeamsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllTeamsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllTeamsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllTeamsQuery(baseOptions?: Apollo.QueryHookOptions<GetAllTeamsQuery, GetAllTeamsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllTeamsQuery, GetAllTeamsQueryVariables>(GetAllTeamsDocument, options);
+      }
+export function useGetAllTeamsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllTeamsQuery, GetAllTeamsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllTeamsQuery, GetAllTeamsQueryVariables>(GetAllTeamsDocument, options);
+        }
+export function useGetAllTeamsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetAllTeamsQuery, GetAllTeamsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAllTeamsQuery, GetAllTeamsQueryVariables>(GetAllTeamsDocument, options);
+        }
+export type GetAllTeamsQueryHookResult = ReturnType<typeof useGetAllTeamsQuery>;
+export type GetAllTeamsLazyQueryHookResult = ReturnType<typeof useGetAllTeamsLazyQuery>;
+export type GetAllTeamsSuspenseQueryHookResult = ReturnType<typeof useGetAllTeamsSuspenseQuery>;
+export type GetAllTeamsQueryResult = Apollo.QueryResult<GetAllTeamsQuery, GetAllTeamsQueryVariables>;
+export const CreateTeamDocument = gql`
+    mutation CreateTeam($input: CreateTeamInput!) {
+  createTeam(input: $input) {
+    data {
+      id
+      name
+      members {
+        ...userFragment
+      }
+    }
+    status {
+      errorMessage
+      status
+    }
+  }
+}
+    ${UserFragmentFragmentDoc}`;
+export type CreateTeamMutationFn = Apollo.MutationFunction<CreateTeamMutation, CreateTeamMutationVariables>;
+
+/**
+ * __useCreateTeamMutation__
+ *
+ * To run a mutation, you first call `useCreateTeamMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateTeamMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createTeamMutation, { data, loading, error }] = useCreateTeamMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateTeamMutation(baseOptions?: Apollo.MutationHookOptions<CreateTeamMutation, CreateTeamMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateTeamMutation, CreateTeamMutationVariables>(CreateTeamDocument, options);
+      }
+export type CreateTeamMutationHookResult = ReturnType<typeof useCreateTeamMutation>;
+export type CreateTeamMutationResult = Apollo.MutationResult<CreateTeamMutation>;
+export type CreateTeamMutationOptions = Apollo.BaseMutationOptions<CreateTeamMutation, CreateTeamMutationVariables>;
+export const GetUserByIdDocument = gql`
+    query GetUserById($userId: ID!) {
+  getUserById(userId: $userId) {
+    ...userFragment
+  }
+}
+    ${UserFragmentFragmentDoc}`;
 
 /**
  * __useGetUserByIdQuery__
@@ -757,20 +867,10 @@ export type GetUserByIdQueryResult = Apollo.QueryResult<GetUserByIdQuery, GetUse
 export const GetAllUsersDocument = gql`
     query GetAllUsers {
   getAllUsers {
-    id
-    name
-    email
-    contactNumber
-    media {
-      id
-      url
-      type
-      alt
-      createdAt
-    }
+    ...userFragment
   }
 }
-    `;
+    ${UserFragmentFragmentDoc}`;
 
 /**
  * __useGetAllUsersQuery__
@@ -806,11 +906,16 @@ export type GetAllUsersQueryResult = Apollo.QueryResult<GetAllUsersQuery, GetAll
 export const CreateUserDocument = gql`
     mutation CreateUser($input: CreateUserInput!) {
   createUser(input: $input) {
-    id
-    name
+    data {
+      ...userFragment
+    }
+    status {
+      errorMessage
+      status
+    }
   }
 }
-    `;
+    ${UserFragmentFragmentDoc}`;
 export type CreateUserMutationFn = Apollo.MutationFunction<CreateUserMutation, CreateUserMutationVariables>;
 
 /**
@@ -840,11 +945,16 @@ export type CreateUserMutationOptions = Apollo.BaseMutationOptions<CreateUserMut
 export const UpdateUserDocument = gql`
     mutation UpdateUser($input: UpdateUserInput!) {
   updateUser(input: $input) {
-    id
-    name
+    data {
+      ...userFragment
+    }
+    status {
+      errorMessage
+      status
+    }
   }
 }
-    `;
+    ${UserFragmentFragmentDoc}`;
 export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, UpdateUserMutationVariables>;
 
 /**
@@ -871,83 +981,3 @@ export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
 export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
 export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
-export const GetAllTeamsDocument = gql`
-    query GetAllTeams {
-  getAllTeams {
-    id
-    name
-    members {
-      id
-      name
-      email
-      teamId
-    }
-  }
-}
-    `;
-
-/**
- * __useGetAllTeamsQuery__
- *
- * To run a query within a React component, call `useGetAllTeamsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetAllTeamsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetAllTeamsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGetAllTeamsQuery(baseOptions?: Apollo.QueryHookOptions<GetAllTeamsQuery, GetAllTeamsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetAllTeamsQuery, GetAllTeamsQueryVariables>(GetAllTeamsDocument, options);
-      }
-export function useGetAllTeamsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllTeamsQuery, GetAllTeamsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetAllTeamsQuery, GetAllTeamsQueryVariables>(GetAllTeamsDocument, options);
-        }
-export function useGetAllTeamsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetAllTeamsQuery, GetAllTeamsQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetAllTeamsQuery, GetAllTeamsQueryVariables>(GetAllTeamsDocument, options);
-        }
-export type GetAllTeamsQueryHookResult = ReturnType<typeof useGetAllTeamsQuery>;
-export type GetAllTeamsLazyQueryHookResult = ReturnType<typeof useGetAllTeamsLazyQuery>;
-export type GetAllTeamsSuspenseQueryHookResult = ReturnType<typeof useGetAllTeamsSuspenseQuery>;
-export type GetAllTeamsQueryResult = Apollo.QueryResult<GetAllTeamsQuery, GetAllTeamsQueryVariables>;
-export const CreateTeamDocument = gql`
-    mutation CreateTeam($input: CreateTeamInput!) {
-  createTeam(input: $input) {
-    id
-    name
-  }
-}
-    `;
-export type CreateTeamMutationFn = Apollo.MutationFunction<CreateTeamMutation, CreateTeamMutationVariables>;
-
-/**
- * __useCreateTeamMutation__
- *
- * To run a mutation, you first call `useCreateTeamMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateTeamMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createTeamMutation, { data, loading, error }] = useCreateTeamMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useCreateTeamMutation(baseOptions?: Apollo.MutationHookOptions<CreateTeamMutation, CreateTeamMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateTeamMutation, CreateTeamMutationVariables>(CreateTeamDocument, options);
-      }
-export type CreateTeamMutationHookResult = ReturnType<typeof useCreateTeamMutation>;
-export type CreateTeamMutationResult = Apollo.MutationResult<CreateTeamMutation>;
-export type CreateTeamMutationOptions = Apollo.BaseMutationOptions<CreateTeamMutation, CreateTeamMutationVariables>;

@@ -1,45 +1,37 @@
+#import "./fragments/user.gql"
+
 query GetUserById($userId: ID!) {
   getUserById(userId: $userId) {
-    id
-    name
-    email
-    contactNumber
-    media {
-      id
-      url
-      type
-      alt
-      createdAt
-    }
+    ...userFragment
   }
 }
 
 query GetAllUsers {
   getAllUsers {
-    id
-    name
-    email
-    contactNumber
-    media {
-      id
-      url
-      type
-      alt
-      createdAt
-    }
+    ...userFragment
   }
 }
 
 mutation CreateUser($input: CreateUserInput!) {
   createUser(input: $input) {
-    id
-    name
+    data {
+      ...userFragment
+    }
+    status {
+      errorMessage
+      status
+    }
   }
 }
 
 mutation UpdateUser($input: UpdateUserInput!) {
   updateUser(input: $input) {
-    id
-    name
+    data {
+      ...userFragment
+    }
+    status {
+      errorMessage
+      status
+    }
   }
 }

@@ -1,14 +1,12 @@
-import { User } from './user';
-import { CreateUserInput } from '@/src/gql/generated';
+import { CreateUserInput, User } from './user';
 
 export type Team = {
   id: string;
   name: string;
-  members: User[];
+  members?: User[];
 };
 
-type CreateTeamUserInput = Omit<CreateUserInput, 'teamId'>;
 export type CreateTeamInput = {
   name: string;
-  user?: CreateTeamUserInput[];
+  members?: Omit<CreateUserInput, 'teamId'>[];
 };

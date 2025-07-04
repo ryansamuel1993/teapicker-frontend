@@ -65,6 +65,8 @@ export default [
       "consistent-return": "off",
       "no-useless-return": "off",
       "no-irregular-whitespace": "off",
+      "react/self-closing-comp": "warn",
+
       "no-param-reassign": "off",
 
       // ESLint comments

@@ -1,34 +1,27 @@
-'use client';
-
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
+import router from 'next/router';
 import { BaseLayout } from '@/components/layouts/BaseLayout/BaseLayout';
 import { PlayButton } from '@/components/button/PlayButtons';
 import { TeamModal } from '@/components/modals/TeamModal';
-import { UserModal } from '@/components/modals/UserModal';
-import { useTeams } from '@/service/hooks/useTeams';
-import { User } from '@/service/types/user';
+import { useTeams } from '@/service/hooks/useTeam';
+import { Team } from '@/service/types/team';
 
 const Page = () => {
-  const { teams } = useTeams();
+  const { teams, isLoading } = useTeams();
 
   const [isTeamModalOpen, setIsTeamModalOpen] = useState(false);
-  const [isUserModalOpen, setIsUserModalOpen] = useState(false);
-  const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
-  const [selectedUserId, setSelectedUserId] = useState<string | undefined>(undefined);
+  const [selectedTeam, setSelectedTeam] = useState<Team>();
 
-  const handleTeamSelect = (teamId: string) => {
-    const selectedTeam = teams.find((team) => team.id === teamId);
-
-    if (selectedTeam) {
-      setSelectedUsers(selectedTeam.members || []);
-      setIsTeamModalOpen(false);
-      setIsUserModalOpen(true);
-    }
-  };
-
-  const handleUserSelect = (userId: string) => {
-    setSelectedUserId(userId);
-  };
+  const handleTeamSelect = useCallback(
+    (team: Team) => {
+      if (selectedTeam) {
+        setSelectedTeam(team);
+        setIsTeamModalOpen(false);
+        router.push(`/profile/${team.id}`);
+      }
+    },
+    [selectedTeam],
+  );
 
   return (
     <BaseLayout>
@@ -37,16 +30,10 @@ const Page = () => {
 
         <TeamModal
           isOpen={isTeamModalOpen}
-          onIsOpenChange={setIsTeamModalOpen}
+          setIsOpen={setIsTeamModalOpen}
           teams={teams}
           onSelect={handleTeamSelect}
-        />
-
-        <UserModal
-          isOpen={isUserModalOpen}
-          onIsOpenChange={setIsUserModalOpen}
-          users={selectedUsers}
-          onSelect={handleUserSelect}
+          isLoading={isLoading}
         />
       </BaseLayout.MainContent>
     </BaseLayout>
