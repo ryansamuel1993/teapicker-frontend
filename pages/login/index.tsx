@@ -1,17 +1,16 @@
 import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { BaseLayout } from '@/components/layouts/BaseLayout/BaseLayout';
-import { SignUpModal } from '@/components/modals/SignUpModal';
-import { CreateUserInput } from '@/service/types/user';
+import { LoginModal } from '@/components/modals/LoginModal';
 import { CurrentUserContext } from '@/service/context/CurrentUserProvider';
 import { useUser } from '@/service/hooks/useUser';
 import { HOME } from '@/service/constants/routes';
 
 const Page = () => {
   const router = useRouter();
-  const { createUser, isLoading, error } = useUser();
+  const { login, user, isLoading, error } = useUser();
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
-  const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(true);
   const [authError, setAuthError] = useState<string | undefined>(undefined);
 
   useEffect(() => {
@@ -20,16 +19,14 @@ const Page = () => {
 
       return;
     }
-
-    setIsSignUpModalOpen(false);
   }, [currentUser, router]);
 
-  const handleUserSave = async (user: CreateUserInput) => {
-    const created = await createUser(user);
+  const handleLogin = async (email: string) => {
+    void login(email);
 
-    if (created) {
-      setCurrentUser(created);
-      setIsSignUpModalOpen(false);
+    if (user) {
+      setCurrentUser(user);
+      setIsLoginModalOpen(false);
       router.push(HOME);
     }
 
@@ -39,10 +36,10 @@ const Page = () => {
   return (
     <BaseLayout>
       <BaseLayout.MainContent className="flex flex-col items-center justify-center min-h-screen p-4">
-        <SignUpModal
-          isOpen={isSignUpModalOpen}
-          setIsOpen={setIsSignUpModalOpen}
-          onSave={handleUserSave}
+        <LoginModal
+          isOpen={isLoginModalOpen}
+          setIsOpen={setIsLoginModalOpen}
+          onLogin={handleLogin}
           error={authError}
           isLoading={isLoading}
         />

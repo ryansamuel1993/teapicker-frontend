@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import { UserImage, AvatarSize } from './UserImage';
 import { AvailableChip } from '../AvailableChip';
 import { MediaType, User } from '@/service/types/user';
@@ -9,7 +8,7 @@ type UserUserProps = {
   size?: AvatarSize | number;
   onClick?: () => void;
   className?: string;
-  hideAvailableChip: boolean;
+  hideAvailableChip?: boolean;
   editAnchorClassName?: string;
   borderClass?: string;
 };
@@ -44,17 +43,5 @@ export const UserAvatar = ({
         </div>
       )}
     </div>
-  );
-};
-
-export const UserUserSkeleton = ({ size = AvatarSize.large }: { size?: AvatarSize | number }) => {
-  return (
-    <div
-      className={classNames('rounded-full bg-white/10 animate-pulse', {
-        'w-12 h-12': size === AvatarSize.small,
-        'w-16 h-16': size === AvatarSize.normal,
-        'size-[120px]': size === AvatarSize.large,
-      })}
-    />
   );
 };

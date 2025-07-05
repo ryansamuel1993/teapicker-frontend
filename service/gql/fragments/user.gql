@@ -3,6 +3,10 @@ fragment userFragment on User {
   name
   email
   contactNumber
+  averageRating
+  preferences {
+    ...preferencesFragment
+  }
   media {
     id
     url

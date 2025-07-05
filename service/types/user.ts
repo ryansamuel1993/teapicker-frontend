@@ -8,7 +8,8 @@ export type User = {
   teamId?: string;
   media?: UserMedia[];
   isAvailable: boolean;
-  preferences: Preferences;
+  preferences?: Preferences;
+  averageRating?: number;
 };
 
 export type UpdateUserInput = {

@@ -1,0 +1,67 @@
+import { Button } from 'flowbite-react';
+import { useEffect, useMemo } from 'react';
+import Modal from '../Modal';
+import { PlayGrid } from '../PlayGrid';
+import { useIsMobileBreakpoint } from '@/service/hooks/useIsMobileBreakpoint';
+import { PlayEntryInput } from '@/service/types/play';
+import { Team } from '@/service/types/team';
+
+type PlayModalProps = {
+  isOpen: boolean;
+  setIsOpen: (state: boolean) => void;
+  onSubmit: (teamId: string, loser: string) => void;
+  playMatch: (input: PlayEntryInput) => Promise<string | undefined>;
+  team: Team;
+  loser: string | undefined;
+  isPlaying: boolean;
+};
+
+export const PlayModal = ({ isOpen, setIsOpen, team, loser, playMatch, onSubmit, isPlaying }: PlayModalProps) => {
+  const { members } = team;
+  const isMobile = useIsMobileBreakpoint();
+
+  const play: PlayEntryInput = useMemo(
+    () => ({
+      players: members ?? [],
+    }),
+    [members],
+  );
+
+  useEffect(() => {
+    if (loser) {
+      return;
+    }
+
+    void playMatch(play);
+  }, [loser, play, playMatch]);
+
+  const handleSubmit = async () => {
+    if (loser && team.id) {
+      onSubmit(team.id, loser);
+    }
+
+    setIsOpen(false);
+  };
+
+  return (
+    <Modal
+      withCloseButton={false}
+      isOpen={isOpen}
+      setIsOpen={setIsOpen}
+      title="Play"
+      fullHeight={isMobile}
+      contentClassName="p-2 md:h-4/5"
+      size="xl"
+      showBackButton
+      actions={
+        !isPlaying && (
+          <Button className="ml-auto border" onClick={handleSubmit}>
+            Submit
+          </Button>
+        )
+      }
+    >
+      <PlayGrid play={play} loser={loser} />
+    </Modal>
+  );
+};

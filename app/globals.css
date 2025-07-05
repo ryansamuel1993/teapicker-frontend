@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "flowbite";
+@import 'tailwindcss';
+@import 'flowbite';
 @plugin "flowbite-react/plugin/tailwindcss";
 @source "../.flowbite-react/class-list.json";
 
@@ -13,6 +13,17 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+}
+.slim-scrollbar::-webkit-scrollbar {
+  @apply w-1;
+}
+
+.slim-scrollbar::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+.slim-scrollbar::-webkit-scrollbar-thumb {
+  @apply rounded-lg bg-white;
 }
 
 @media (prefers-color-scheme: dark) {

@@ -7,7 +7,7 @@ import { UserModal } from '@/components/modals/UserModal';
 import { useTeams } from '@/service/hooks/useTeam';
 import { LoadingSpinner } from '@/components/Spinner';
 import { User } from '@/service/types/user';
-import { PROFILE_SUBROUTE } from '@/service/constants/routes';
+import { HOME } from '@/service/constants/routes';
 
 const Page = () => {
   const router = useRouter();
@@ -33,13 +33,10 @@ const Page = () => {
     }
   }, [teamId, getTeamById]);
 
-  const handleUserSelect = useCallback(
-    (user: User) => {
-      router.push(`${PROFILE_SUBROUTE + user.id}`);
-      setIsUserModalOpen(false);
-    },
-    [router],
-  );
+  const handleUserSelect = useCallback(() => {
+    router.push(HOME);
+    setIsUserModalOpen(false);
+  }, [router]);
 
   return (
     <BaseLayout>

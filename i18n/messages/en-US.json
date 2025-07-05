@@ -11,12 +11,31 @@
     "email": "Email",
     "contact": "Contact"
   },
+  "UserModal": {
+    "title": "Users"
+  },
   "Profile": {
-    "title": "User Profile",
+    "title": "Profile",
     "noImage": "No Image",
     "noEmail": "No email provided",
     "noContact": "No contact number",
-    "UserAlt": "{{name}}'s User"
+    "noRating": "No rating"
+  },
+  "Preferences":{
+    "preferences": "Preferences",
+    "drinkType": "Drink Type",
+    "sweetenerType": "Sweetener",
+    "sugarAmount": "Sugar Amount",
+    "milkStrength": "Milk Strength"
+  },
+  "Login":{
+    "title": "Log in",
+    "login": "Login",
+    "emailPlaceholder": "Enter your email",
+    "validation": {
+      "emailInvalid": "Please enter a valid email address."
+    }
+
   },
   "Signup": {
     "title": "Create an Account",

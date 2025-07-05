@@ -1,8 +1,10 @@
-import { useEffect, useState, FC, PropsWithChildren } from 'react';
+import { useEffect, useState, FC, PropsWithChildren, useContext } from 'react';
 import classNames from 'classnames';
 import { Sidebar, SidebarItem, SidebarItemGroup, SidebarItems } from 'flowbite-react';
-import { useRouter } from 'next/router';
-import { useTabs } from '@/service/hooks/useTabs';
+import { useRouter } from 'next/navigation';
+import { TabItem, useTabs } from '@/service/hooks/useTabs';
+import { CurrentUserContext } from '@/service/context/CurrentUserProvider';
+import { SIGNUP, SIGNOUT } from '@/service/constants/routes';
 
 const DashboardSidebar = ({ children, className }: PropsWithChildren<{ className?: string }>) => (
   <div className={classNames('hidden md:flex w-full xl:w-4/12 2xl:w-2/12 items-start', className)}>
@@ -15,6 +17,7 @@ const DashboardSidebar = ({ children, className }: PropsWithChildren<{ className
 export const SideBar: FC = () => {
   const router = useRouter();
   const tabs = useTabs();
+  const { removeCurrentUser } = useContext(CurrentUserContext);
 
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
@@ -23,15 +26,25 @@ export const SideBar: FC = () => {
     return null;
   }
 
+  const handleTabClick = (tab: TabItem) => {
+    if (tab.route === SIGNOUT) {
+      removeCurrentUser();
+      localStorage.removeItem('authToken');
+      router.push(SIGNUP);
+    } else {
+      router.push(tab.route);
+    }
+  };
+
   return (
     <DashboardSidebar>
       <Sidebar aria-label="Sidebar">
         <SidebarItems>
-          <SidebarItemGroup>
+          <SidebarItemGroup className="-mt-4">
             {tabs.map((tab) => (
               <SidebarItem
                 key={tab.label}
-                onClick={() => router.push(tab.route)}
+                onClick={() => handleTabClick(tab)}
                 icon={tab.icon}
                 labelColor={tab.labelColor}
               >

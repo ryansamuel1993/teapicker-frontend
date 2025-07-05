@@ -5,13 +5,7 @@ mutation CreatePreferences($input: CreatePreferencesInput) {
       errorMessage
     }
     data {
-      id
-      userId
-      drinkType
-      sweetenerType
-      sugarAmount
-      milkStrength
-      notes
+      ...preferencesFragment
     }
   }
 }

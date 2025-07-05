@@ -1,0 +1,8 @@
+fragment preferencesFragment on Preferences {
+  userId
+  drinkType
+  sweetenerType
+  sugarAmount
+  milkStrength
+  notes
+}

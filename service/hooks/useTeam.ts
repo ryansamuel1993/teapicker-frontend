@@ -45,8 +45,6 @@ export const useTeams = () => {
   const getTeamById = useCallback(
     (id: string) => {
       if (!teams.length) {
-        console.log('asdasdasd');
-
         return undefined;
       }
 

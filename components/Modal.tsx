@@ -26,7 +26,7 @@ interface ModalProps {
   withCloseButton?: boolean;
   bgTransparent?: boolean;
   footerClassName?: string;
-  showBackButton?: boolean; // 👈 new prop
+  showBackButton?: boolean;
 }
 
 const theme = ({
@@ -36,7 +36,7 @@ const theme = ({
   bodyClassName,
   headerClassName,
   contentClassName,
-  withCloseButton = true,
+  withCloseButton = false,
   bgTransparent,
   footerClassName,
   contentInnerClassName,
@@ -56,7 +56,7 @@ const theme = ({
     },
     content: {
       base: classNames(
-        'relative md:h-full w-full sm:p-4 md:h-auto flex items-end md:items-center mt-auto md:mt-0',
+        'relative md:h-full w-full sm:p-4 md:h-auto flex md:items-center mt-auto md:mt-0',
         contentClassName,
       ),
       inner: classNames(
@@ -141,17 +141,19 @@ const Modal: FC<ModalProps> = ({
       size={isMobile ? 'md' : size}
     >
       {!withoutHeader && (
-        <ModalHeader className="relative flex items-center justify-center text-center">
+        <div className="relative flex items-center justify-center px-4 border-b-[0.5px] text-white  border-gray-400">
           {showBackButton && (
             <div className="absolute -translate-y-1/2 left-4 top-1/2">
               <BackButton />
             </div>
           )}
-          {title}
-        </ModalHeader>
+
+          <ModalHeader className="text-base font-medium text-center truncate">{title}</ModalHeader>
+        </div>
       )}
+
       <ModalBody style={{ maxHeight: bodyMaxHeight, top: '100px' }}>{children}</ModalBody>
-      {hasDivider && <Divider className="mb-0" />}
+      {hasDivider && <Divider className="mr-20" />}
       {!!actions && <ModalFooter>{actions}</ModalFooter>}
     </FBModal>
   );

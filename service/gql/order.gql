@@ -10,6 +10,14 @@ query AllOrders {
   }
 }
 
+query GetMenu {
+  getMenu {
+    id
+    name
+    price
+    isAvailable
+  }
+}
 query Order($orderId: ID!) {
   getOrder(id: $orderId) {
     id

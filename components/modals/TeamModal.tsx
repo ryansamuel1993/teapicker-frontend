@@ -1,19 +1,20 @@
 import { Button } from 'flowbite-react';
-import classNames from 'classnames';
 import { LoadingSpinner } from '../Spinner';
 import Modal from '@/components/Modal';
 import { Team } from '@/service/types/team';
+import { useIsMobileBreakpoint } from '@/service/hooks/useIsMobileBreakpoint';
 
 type TeamModalProps = {
   isOpen: boolean;
   setIsOpen: (state: boolean) => void;
   teams: Team[];
-  selectedTeam?: Team;
   isLoading: boolean;
   onSelect: (team: Team) => void;
 };
 
-export const TeamModal = ({ isOpen, setIsOpen, teams, selectedTeam, onSelect, isLoading }: TeamModalProps) => {
+export const TeamModal = ({ isOpen, setIsOpen, teams, onSelect, isLoading }: TeamModalProps) => {
+  const isMobile = useIsMobileBreakpoint();
+
   const handleSelect = (team: Team) => {
     onSelect(team);
     setIsOpen(false);
@@ -22,30 +23,30 @@ export const TeamModal = ({ isOpen, setIsOpen, teams, selectedTeam, onSelect, is
   return (
     <Modal
       withCloseButton={false}
+      fullHeight={isMobile}
+      contentClassName="p-2 md:h-3/4"
       isOpen={isOpen}
       setIsOpen={setIsOpen}
-      title="Select a Team"
+      title="Team"
       size="md"
-      bodyClassName="space-y-3"
     >
       {isLoading && <LoadingSpinner />}
-      <div className="flex flex-col gap-2">
-        {teams.map((team) => (
-          <Button
-            key={team.id}
-            color={selectedTeam === team ? 'dark' : 'gray'}
-            className={classNames(
-              'w-full justify-start text-left transition-all hover:bg-gray-800 border border-transparent',
-              {
-                'bg-gray-800 text-white border-white/20': selectedTeam === team,
-              },
-            )}
-            onClick={() => handleSelect(team)}
-          >
-            {team.name}
-          </Button>
-        ))}
-      </div>
+
+      {!isLoading && teams.length === 0 && <p className="text-sm text-center text-gray-400">No teams available.</p>}
+
+      {!isLoading && teams.length > 0 && (
+        <div className="flex flex-col gap-2">
+          {teams.map((team) => (
+            <Button
+              key={team.id}
+              className="justify-center w-full bg-gray-800 border border-transparent"
+              onClick={() => handleSelect(team)}
+            >
+              {team.name}
+            </Button>
+          ))}
+        </div>
+      )}
     </Modal>
   );
 };

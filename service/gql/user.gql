@@ -6,6 +6,12 @@ query GetUserById($userId: ID!) {
   }
 }
 
+query login($email: String) {
+  login(email: $email) {
+    ...userFragment
+  }
+}
+
 query GetAllUsers {
   getAllUsers {
     ...userFragment

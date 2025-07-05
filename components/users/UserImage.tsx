@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { JSX, MouseEventHandler, useMemo, useState } from 'react';
+import { MouseEventHandler, useMemo, useState } from 'react';
 import { ResponsiveImage } from '../ResponsiveImage';
 import { UserMedia } from '@/service/types/user';
 
@@ -20,17 +20,7 @@ const SIZE_MAP: Record<AvatarSize, number> = {
   extraSmall: 36,
   small: 52,
   normal: 76,
-  large: 114,
-};
-
-const TEXT_CLASS_MAP: Record<AvatarSize, string> = {
-  xTiny: 'text-heading-sm',
-  tiny: 'text-heading-sm',
-  buttonStandard: 'text-heading-sm',
-  extraSmall: 'text-heading-sm',
-  small: 'text-heading-sm',
-  normal: 'text-heading-xl',
-  large: 'text-heading-xl',
+  large: 140,
 };
 
 const getBorderClass = (size: AvatarSize | number) => {
@@ -58,7 +48,6 @@ type UserImageProps = {
   isAvailable?: boolean;
   className?: string;
   innerClassName?: string;
-  UserIcon?: JSX.Element;
   borderClass?: string;
   userInitials?: string;
 };
@@ -69,7 +58,6 @@ export const UserImage = ({
   className,
   innerClassName,
   onClick,
-  UserIcon,
   borderClass,
 }: UserImageProps) => {
   const [hasError, setHasError] = useState(false);
@@ -87,7 +75,7 @@ export const UserImage = ({
         {image && !hasError ? (
           <ResponsiveImage
             image={image}
-            alt="User User"
+            alt="User"
             width={114}
             height={114}
             style={style}
@@ -95,18 +83,7 @@ export const UserImage = ({
             onError={() => setHasError(true)}
             className={classNames('rounded-full object-cover bg-grey-2', border)}
           />
-        ) : (
-          (UserIcon ?? (
-            <div
-              className={classNames(
-                'rounded-full bg-[#4F3F3F] flex items-center justify-center text-white font-semibold overflow-hidden',
-                TEXT_CLASS_MAP[size as AvatarSize],
-                border,
-              )}
-              style={style}
-            />
-          ))
-        )}
+        ) : null}
       </div>
     </Component>
   );

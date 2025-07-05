@@ -10,7 +10,7 @@ export const Header = () => {
   const isMobile = useIsMobileBreakpoint();
 
   return (
-    <header className="sticky top-0 z-50 flex items-center justify-between h-16 px-4 text-white bg-gray-900">
+    <header className="sticky top-0 z-50 flex items-center justify-between h-16 px-4 text-white bg-gray-900 dark:bg-gray-800">
       <div className="flex items-center ml-2 text-center">
         <a href="/" className="flex items-center space-x-2">
           <JavaIcon size={isMobile ? 50 : 40} />

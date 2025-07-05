@@ -1,24 +1,29 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { BaseLayout } from '@/components/layouts/BaseLayout/BaseLayout';
 import { ProfileModal } from '@/components/modals/ProfileModal';
-import { useUser } from '@/service/hooks/useUser';
+import { useCurrentUser } from '@/service/hooks/useCurrentUser';
+import { HOME } from '@/service/constants/routes';
 
 const Page = () => {
-  const params = useParams();
-  const userId = params?.userId as string;
-
-  const { fetchUserById, user } = useUser();
+  const currentUser = useCurrentUser();
+  const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(true);
 
   useEffect(() => {
-    void fetchUserById(userId);
-  }, [userId, fetchUserById]);
+    if (!currentUser) {
+      router.push(HOME);
+    }
+  }, [currentUser, router]);
+
+  if (!currentUser) {
+    return null;
+  }
 
   return (
     <BaseLayout>
       <BaseLayout.MainContent className="flex flex-col items-center justify-center min-h-screen p-4">
-        <ProfileModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} user={user} />
+        <ProfileModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} user={currentUser} />
       </BaseLayout.MainContent>
     </BaseLayout>
   );

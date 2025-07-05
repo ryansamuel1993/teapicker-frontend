@@ -27,6 +27,7 @@ export type CreateOrderInput = {
   items: Array<OrderItemInput>;
   notes?: InputMaybe<Scalars['String']['input']>;
   orderType?: InputMaybe<OrderType>;
+  teamId: Scalars['ID']['input'];
   userId: Scalars['ID']['input'];
 };
 
@@ -126,6 +127,7 @@ export type Mutation = {
   createRating: Rating;
   createTeam?: Maybe<CreateTeamResponse>;
   createUser: CreateUserResponse;
+  getPlayResult?: Maybe<PlayResponse>;
   updatePreferences?: Maybe<UpdatePreferencesResponse>;
   updateUser?: Maybe<UpdateUserResponse>;
 };
@@ -153,6 +155,11 @@ export type MutationCreateTeamArgs = {
 
 export type MutationCreateUserArgs = {
   input: CreateUserInput;
+};
+
+
+export type MutationGetPlayResultArgs = {
+  play?: InputMaybe<PlayEntryInput>;
 };
 
 
@@ -195,10 +202,20 @@ export enum OrderType {
   Internal = 'INTERNAL'
 }
 
+export type PlayEntryInput = {
+  players?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+export type PlayResponse = {
+  __typename?: 'PlayResponse';
+  data?: Maybe<Scalars['String']['output']>;
+  loser?: Maybe<Scalars['String']['output']>;
+  status?: Maybe<ResponseStatus>;
+};
+
 export type Preferences = {
   __typename?: 'Preferences';
   drinkType: DrinkType;
-  id: Scalars['ID']['output'];
   milkStrength?: Maybe<MilkStrength>;
   notes?: Maybe<Scalars['String']['output']>;
   sugarAmount?: Maybe<Scalars['Int']['output']>;
@@ -208,15 +225,15 @@ export type Preferences = {
 
 export type Query = {
   __typename?: 'Query';
-  getAllOrders: Array<Order>;
+  getAllOrders?: Maybe<Array<Maybe<Order>>>;
   getAllTeams?: Maybe<Array<Maybe<Team>>>;
   getAllUsers?: Maybe<Array<Maybe<User>>>;
-  getMenu: Array<Item>;
+  getMenu?: Maybe<Array<Maybe<Item>>>;
   getOrder?: Maybe<Order>;
   getRatingById?: Maybe<Rating>;
   getRatingsByUser: Array<Rating>;
   getUserById?: Maybe<User>;
-  getUserPreferences?: Maybe<Preferences>;
+  login?: Maybe<User>;
 };
 
 
@@ -240,8 +257,8 @@ export type QueryGetUserByIdArgs = {
 };
 
 
-export type QueryGetUserPreferencesArgs = {
-  userId: Scalars['ID']['input'];
+export type QueryLoginArgs = {
+  email?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type Rating = {
@@ -298,11 +315,13 @@ export type UpdateUserResponse = {
 
 export type User = {
   __typename?: 'User';
+  averageRating?: Maybe<Scalars['Int']['output']>;
   contactNumber?: Maybe<Scalars['String']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
   media?: Maybe<Array<Maybe<UserMedia>>>;
   name: Scalars['String']['output'];
+  preferences?: Maybe<Preferences>;
   teamId?: Maybe<Scalars['String']['output']>;
 };
 
@@ -316,12 +335,19 @@ export type UserMedia = {
   userId: Scalars['ID']['output'];
 };
 
-export type UserFragmentFragment = { __typename?: 'User', id: string, name: string, email?: string, contactNumber?: string, media?: Array<{ __typename?: 'UserMedia', id: string, url: string, type: MediaType, alt?: string, createdAt?: any, userId: string }> };
+export type PreferencesFragmentFragment = { __typename?: 'Preferences', userId: string, drinkType: DrinkType, sweetenerType?: SweetenerType, sugarAmount?: number, milkStrength?: MilkStrength, notes?: string };
+
+export type UserFragmentFragment = { __typename?: 'User', id: string, name: string, email?: string, contactNumber?: string, averageRating?: number, preferences?: { __typename?: 'Preferences', userId: string, drinkType: DrinkType, sweetenerType?: SweetenerType, sugarAmount?: number, milkStrength?: MilkStrength, notes?: string }, media?: Array<{ __typename?: 'UserMedia', id: string, url: string, type: MediaType, alt?: string, createdAt?: any, userId: string }> };
 
 export type AllOrdersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AllOrdersQuery = { __typename?: 'Query', getAllOrders: Array<{ __typename?: 'Order', id: string, createdAt: string, completed?: boolean, orderType?: OrderType, userId?: string, teamId?: string, notes?: string }> };
+export type AllOrdersQuery = { __typename?: 'Query', getAllOrders?: Array<{ __typename?: 'Order', id: string, createdAt: string, completed?: boolean, orderType?: OrderType, userId?: string, teamId?: string, notes?: string }> };
+
+export type GetMenuQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetMenuQuery = { __typename?: 'Query', getMenu?: Array<{ __typename?: 'Item', id: string, name: string, price: number, isAvailable: boolean }> };
 
 export type OrderQueryVariables = Exact<{
   orderId: Scalars['ID']['input'];
@@ -337,12 +363,19 @@ export type CreateOrderMutationVariables = Exact<{
 
 export type CreateOrderMutation = { __typename?: 'Mutation', createOrder: { __typename?: 'CreateOrderResponse', status?: { __typename?: 'ResponseStatus', errorMessage?: string, status: string }, data?: { __typename?: 'Order', orderType?: OrderType, userId?: string, notes?: string, items: Array<{ __typename?: 'OrderItem', id: string, quantity: number }> } } };
 
+export type GetPlayResultMutationVariables = Exact<{
+  play: PlayEntryInput;
+}>;
+
+
+export type GetPlayResultMutation = { __typename?: 'Mutation', getPlayResult?: { __typename?: 'PlayResponse', data?: string, status?: { __typename?: 'ResponseStatus', status: string, errorMessage?: string } } };
+
 export type CreatePreferencesMutationVariables = Exact<{
   input?: InputMaybe<CreatePreferencesInput>;
 }>;
 
 
-export type CreatePreferencesMutation = { __typename?: 'Mutation', createPreferences?: { __typename?: 'CreatePreferencesResponse', status: { __typename?: 'ResponseStatus', status: string, errorMessage?: string }, data?: { __typename?: 'Preferences', id: string, userId: string, drinkType: DrinkType, sweetenerType?: SweetenerType, sugarAmount?: number, milkStrength?: MilkStrength, notes?: string } } };
+export type CreatePreferencesMutation = { __typename?: 'Mutation', createPreferences?: { __typename?: 'CreatePreferencesResponse', status: { __typename?: 'ResponseStatus', status: string, errorMessage?: string }, data?: { __typename?: 'Preferences', userId: string, drinkType: DrinkType, sweetenerType?: SweetenerType, sugarAmount?: number, milkStrength?: MilkStrength, notes?: string } } };
 
 export type GetRatingByIdQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -368,47 +401,68 @@ export type CreateRatingMutation = { __typename?: 'Mutation', createRating: { __
 export type GetAllTeamsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllTeamsQuery = { __typename?: 'Query', getAllTeams?: Array<{ __typename?: 'Team', id: string, name: string, members?: Array<{ __typename?: 'User', id: string, name: string, email?: string, contactNumber?: string, media?: Array<{ __typename?: 'UserMedia', id: string, url: string, type: MediaType, alt?: string, createdAt?: any, userId: string }> }> }> };
+export type GetAllTeamsQuery = { __typename?: 'Query', getAllTeams?: Array<{ __typename?: 'Team', id: string, name: string, members?: Array<{ __typename?: 'User', id: string, name: string, email?: string, contactNumber?: string, averageRating?: number, preferences?: { __typename?: 'Preferences', userId: string, drinkType: DrinkType, sweetenerType?: SweetenerType, sugarAmount?: number, milkStrength?: MilkStrength, notes?: string }, media?: Array<{ __typename?: 'UserMedia', id: string, url: string, type: MediaType, alt?: string, createdAt?: any, userId: string }> }> }> };
 
 export type CreateTeamMutationVariables = Exact<{
   input: CreateTeamInput;
 }>;
 
 
-export type CreateTeamMutation = { __typename?: 'Mutation', createTeam?: { __typename?: 'CreateTeamResponse', data?: { __typename?: 'Team', id: string, name: string, members?: Array<{ __typename?: 'User', id: string, name: string, email?: string, contactNumber?: string, media?: Array<{ __typename?: 'UserMedia', id: string, url: string, type: MediaType, alt?: string, createdAt?: any, userId: string }> }> }, status?: { __typename?: 'ResponseStatus', errorMessage?: string, status: string } } };
+export type CreateTeamMutation = { __typename?: 'Mutation', createTeam?: { __typename?: 'CreateTeamResponse', data?: { __typename?: 'Team', id: string, name: string, members?: Array<{ __typename?: 'User', id: string, name: string, email?: string, contactNumber?: string, averageRating?: number, preferences?: { __typename?: 'Preferences', userId: string, drinkType: DrinkType, sweetenerType?: SweetenerType, sugarAmount?: number, milkStrength?: MilkStrength, notes?: string }, media?: Array<{ __typename?: 'UserMedia', id: string, url: string, type: MediaType, alt?: string, createdAt?: any, userId: string }> }> }, status?: { __typename?: 'ResponseStatus', errorMessage?: string, status: string } } };
 
 export type GetUserByIdQueryVariables = Exact<{
   userId: Scalars['ID']['input'];
 }>;
 
 
-export type GetUserByIdQuery = { __typename?: 'Query', getUserById?: { __typename?: 'User', id: string, name: string, email?: string, contactNumber?: string, media?: Array<{ __typename?: 'UserMedia', id: string, url: string, type: MediaType, alt?: string, createdAt?: any, userId: string }> } };
+export type GetUserByIdQuery = { __typename?: 'Query', getUserById?: { __typename?: 'User', id: string, name: string, email?: string, contactNumber?: string, averageRating?: number, preferences?: { __typename?: 'Preferences', userId: string, drinkType: DrinkType, sweetenerType?: SweetenerType, sugarAmount?: number, milkStrength?: MilkStrength, notes?: string }, media?: Array<{ __typename?: 'UserMedia', id: string, url: string, type: MediaType, alt?: string, createdAt?: any, userId: string }> } };
+
+export type LoginQueryVariables = Exact<{
+  email?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type LoginQuery = { __typename?: 'Query', login?: { __typename?: 'User', id: string, name: string, email?: string, contactNumber?: string, averageRating?: number, preferences?: { __typename?: 'Preferences', userId: string, drinkType: DrinkType, sweetenerType?: SweetenerType, sugarAmount?: number, milkStrength?: MilkStrength, notes?: string }, media?: Array<{ __typename?: 'UserMedia', id: string, url: string, type: MediaType, alt?: string, createdAt?: any, userId: string }> } };
 
 export type GetAllUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllUsersQuery = { __typename?: 'Query', getAllUsers?: Array<{ __typename?: 'User', id: string, name: string, email?: string, contactNumber?: string, media?: Array<{ __typename?: 'UserMedia', id: string, url: string, type: MediaType, alt?: string, createdAt?: any, userId: string }> }> };
+export type GetAllUsersQuery = { __typename?: 'Query', getAllUsers?: Array<{ __typename?: 'User', id: string, name: string, email?: string, contactNumber?: string, averageRating?: number, preferences?: { __typename?: 'Preferences', userId: string, drinkType: DrinkType, sweetenerType?: SweetenerType, sugarAmount?: number, milkStrength?: MilkStrength, notes?: string }, media?: Array<{ __typename?: 'UserMedia', id: string, url: string, type: MediaType, alt?: string, createdAt?: any, userId: string }> }> };
 
 export type CreateUserMutationVariables = Exact<{
   input: CreateUserInput;
 }>;
 
 
-export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'CreateUserResponse', data?: { __typename?: 'User', id: string, name: string, email?: string, contactNumber?: string, media?: Array<{ __typename?: 'UserMedia', id: string, url: string, type: MediaType, alt?: string, createdAt?: any, userId: string }> }, status?: { __typename?: 'ResponseStatus', errorMessage?: string, status: string } } };
+export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'CreateUserResponse', data?: { __typename?: 'User', id: string, name: string, email?: string, contactNumber?: string, averageRating?: number, preferences?: { __typename?: 'Preferences', userId: string, drinkType: DrinkType, sweetenerType?: SweetenerType, sugarAmount?: number, milkStrength?: MilkStrength, notes?: string }, media?: Array<{ __typename?: 'UserMedia', id: string, url: string, type: MediaType, alt?: string, createdAt?: any, userId: string }> }, status?: { __typename?: 'ResponseStatus', errorMessage?: string, status: string } } };
 
 export type UpdateUserMutationVariables = Exact<{
   input: UpdateUserInput;
 }>;
 
 
-export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'UpdateUserResponse', data?: { __typename?: 'User', id: string, name: string, email?: string, contactNumber?: string, media?: Array<{ __typename?: 'UserMedia', id: string, url: string, type: MediaType, alt?: string, createdAt?: any, userId: string }> }, status?: { __typename?: 'ResponseStatus', errorMessage?: string, status: string } } };
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'UpdateUserResponse', data?: { __typename?: 'User', id: string, name: string, email?: string, contactNumber?: string, averageRating?: number, preferences?: { __typename?: 'Preferences', userId: string, drinkType: DrinkType, sweetenerType?: SweetenerType, sugarAmount?: number, milkStrength?: MilkStrength, notes?: string }, media?: Array<{ __typename?: 'UserMedia', id: string, url: string, type: MediaType, alt?: string, createdAt?: any, userId: string }> }, status?: { __typename?: 'ResponseStatus', errorMessage?: string, status: string } } };
 
+export const PreferencesFragmentFragmentDoc = gql`
+    fragment preferencesFragment on Preferences {
+  userId
+  drinkType
+  sweetenerType
+  sugarAmount
+  milkStrength
+  notes
+}
+    `;
 export const UserFragmentFragmentDoc = gql`
     fragment userFragment on User {
   id
   name
   email
   contactNumber
+  averageRating
+  preferences {
+    ...preferencesFragment
+  }
   media {
     id
     url
@@ -418,7 +472,7 @@ export const UserFragmentFragmentDoc = gql`
     userId
   }
 }
-    `;
+    ${PreferencesFragmentFragmentDoc}`;
 export const AllOrdersDocument = gql`
     query AllOrders {
   getAllOrders {
@@ -464,6 +518,48 @@ export type AllOrdersQueryHookResult = ReturnType<typeof useAllOrdersQuery>;
 export type AllOrdersLazyQueryHookResult = ReturnType<typeof useAllOrdersLazyQuery>;
 export type AllOrdersSuspenseQueryHookResult = ReturnType<typeof useAllOrdersSuspenseQuery>;
 export type AllOrdersQueryResult = Apollo.QueryResult<AllOrdersQuery, AllOrdersQueryVariables>;
+export const GetMenuDocument = gql`
+    query GetMenu {
+  getMenu {
+    id
+    name
+    price
+    isAvailable
+  }
+}
+    `;
+
+/**
+ * __useGetMenuQuery__
+ *
+ * To run a query within a React component, call `useGetMenuQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMenuQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMenuQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetMenuQuery(baseOptions?: Apollo.QueryHookOptions<GetMenuQuery, GetMenuQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMenuQuery, GetMenuQueryVariables>(GetMenuDocument, options);
+      }
+export function useGetMenuLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMenuQuery, GetMenuQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMenuQuery, GetMenuQueryVariables>(GetMenuDocument, options);
+        }
+export function useGetMenuSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetMenuQuery, GetMenuQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetMenuQuery, GetMenuQueryVariables>(GetMenuDocument, options);
+        }
+export type GetMenuQueryHookResult = ReturnType<typeof useGetMenuQuery>;
+export type GetMenuLazyQueryHookResult = ReturnType<typeof useGetMenuLazyQuery>;
+export type GetMenuSuspenseQueryHookResult = ReturnType<typeof useGetMenuSuspenseQuery>;
+export type GetMenuQueryResult = Apollo.QueryResult<GetMenuQuery, GetMenuQueryVariables>;
 export const OrderDocument = gql`
     query Order($orderId: ID!) {
   getOrder(id: $orderId) {
@@ -571,6 +667,43 @@ export function useCreateOrderMutation(baseOptions?: Apollo.MutationHookOptions<
 export type CreateOrderMutationHookResult = ReturnType<typeof useCreateOrderMutation>;
 export type CreateOrderMutationResult = Apollo.MutationResult<CreateOrderMutation>;
 export type CreateOrderMutationOptions = Apollo.BaseMutationOptions<CreateOrderMutation, CreateOrderMutationVariables>;
+export const GetPlayResultDocument = gql`
+    mutation GetPlayResult($play: PlayEntryInput!) {
+  getPlayResult(play: $play) {
+    status {
+      status
+      errorMessage
+    }
+    data
+  }
+}
+    `;
+export type GetPlayResultMutationFn = Apollo.MutationFunction<GetPlayResultMutation, GetPlayResultMutationVariables>;
+
+/**
+ * __useGetPlayResultMutation__
+ *
+ * To run a mutation, you first call `useGetPlayResultMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useGetPlayResultMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [getPlayResultMutation, { data, loading, error }] = useGetPlayResultMutation({
+ *   variables: {
+ *      play: // value for 'play'
+ *   },
+ * });
+ */
+export function useGetPlayResultMutation(baseOptions?: Apollo.MutationHookOptions<GetPlayResultMutation, GetPlayResultMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<GetPlayResultMutation, GetPlayResultMutationVariables>(GetPlayResultDocument, options);
+      }
+export type GetPlayResultMutationHookResult = ReturnType<typeof useGetPlayResultMutation>;
+export type GetPlayResultMutationResult = Apollo.MutationResult<GetPlayResultMutation>;
+export type GetPlayResultMutationOptions = Apollo.BaseMutationOptions<GetPlayResultMutation, GetPlayResultMutationVariables>;
 export const CreatePreferencesDocument = gql`
     mutation CreatePreferences($input: CreatePreferencesInput) {
   createPreferences(input: $input) {
@@ -579,17 +712,11 @@ export const CreatePreferencesDocument = gql`
       errorMessage
     }
     data {
-      id
-      userId
-      drinkType
-      sweetenerType
-      sugarAmount
-      milkStrength
-      notes
+      ...preferencesFragment
     }
   }
 }
-    `;
+    ${PreferencesFragmentFragmentDoc}`;
 export type CreatePreferencesMutationFn = Apollo.MutationFunction<CreatePreferencesMutation, CreatePreferencesMutationVariables>;
 
 /**
@@ -864,6 +991,46 @@ export type GetUserByIdQueryHookResult = ReturnType<typeof useGetUserByIdQuery>;
 export type GetUserByIdLazyQueryHookResult = ReturnType<typeof useGetUserByIdLazyQuery>;
 export type GetUserByIdSuspenseQueryHookResult = ReturnType<typeof useGetUserByIdSuspenseQuery>;
 export type GetUserByIdQueryResult = Apollo.QueryResult<GetUserByIdQuery, GetUserByIdQueryVariables>;
+export const LoginDocument = gql`
+    query login($email: String) {
+  login(email: $email) {
+    ...userFragment
+  }
+}
+    ${UserFragmentFragmentDoc}`;
+
+/**
+ * __useLoginQuery__
+ *
+ * To run a query within a React component, call `useLoginQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLoginQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLoginQuery({
+ *   variables: {
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useLoginQuery(baseOptions?: Apollo.QueryHookOptions<LoginQuery, LoginQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<LoginQuery, LoginQueryVariables>(LoginDocument, options);
+      }
+export function useLoginLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<LoginQuery, LoginQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<LoginQuery, LoginQueryVariables>(LoginDocument, options);
+        }
+export function useLoginSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<LoginQuery, LoginQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<LoginQuery, LoginQueryVariables>(LoginDocument, options);
+        }
+export type LoginQueryHookResult = ReturnType<typeof useLoginQuery>;
+export type LoginLazyQueryHookResult = ReturnType<typeof useLoginLazyQuery>;
+export type LoginSuspenseQueryHookResult = ReturnType<typeof useLoginSuspenseQuery>;
+export type LoginQueryResult = Apollo.QueryResult<LoginQuery, LoginQueryVariables>;
 export const GetAllUsersDocument = gql`
     query GetAllUsers {
   getAllUsers {

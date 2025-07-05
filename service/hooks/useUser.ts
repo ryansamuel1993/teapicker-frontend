@@ -10,13 +10,25 @@ export const useUser = () => {
   const [updateUserMutation, { loading: updating }] = gql.useUpdateUserMutation();
 
   const [status, setStatus] = useState<string | undefined>();
-  const [fetchedUserById, setFetchedUserById] = useState<User | undefined>();
+  const [user, setUser] = useState<User | undefined>();
 
   const [fetchUserByIdQuery] = useLazyQuery(gql.GetUserByIdDocument, {
     fetchPolicy: 'network-only',
     onCompleted: (response) => {
       if (response?.getUserById) {
-        setFetchedUserById(mapUser(response.getUserById));
+        setUser(mapUser(response.getUserById));
+      }
+    },
+    onError: (error) => {
+      setStatus(error.message);
+    },
+  });
+
+  const [loginQuery] = useLazyQuery(gql.LoginDocument, {
+    fetchPolicy: 'network-only',
+    onCompleted: (response) => {
+      if (response?.login) {
+        setUser(mapUser(response.login));
       }
     },
     onError: (error) => {
@@ -28,9 +40,9 @@ export const useUser = () => {
     return (data?.getAllUsers ?? []).map(mapUser);
   }, [data]);
 
-  const createUser = async (user: CreateUserInput) => {
+  const createUser = async (createUserInput: CreateUserInput) => {
     const response = await createUserMutation({
-      variables: { input: user },
+      variables: { input: createUserInput },
     });
 
     if (response?.data?.createUser?.status?.errorMessage) {
@@ -44,9 +56,9 @@ export const useUser = () => {
     return undefined;
   };
 
-  const updateUser = async (user: UpdateUserInput) => {
+  const updateUser = async (updateUserInput: UpdateUserInput) => {
     const response = await updateUserMutation({
-      variables: { input: user },
+      variables: { input: updateUserInput },
     });
 
     if (response?.data?.updateUser?.status?.errorMessage) {
@@ -63,6 +75,13 @@ export const useUser = () => {
     [fetchUserByIdQuery],
   );
 
+  const login = useCallback(
+    (email: string) => {
+      loginQuery({ variables: { email } });
+    },
+    [loginQuery],
+  );
+
   return {
     users,
     isLoading: loading || creating || updating,
@@ -71,6 +90,7 @@ export const useUser = () => {
     error: status,
     refetch,
     fetchUserById,
-    fetchedUserById,
+    login,
+    user,
   };
 };

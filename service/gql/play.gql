@@ -1,0 +1,9 @@
+mutation GetPlayResult($play: PlayEntryInput!) {
+  getPlayResult(play: $play) {
+    status {
+      status
+      errorMessage
+    }
+    data
+  }
+}

@@ -1,9 +1,9 @@
 import { FC, SVGProps, useMemo } from 'react';
-import { HiArchive, HiEye, HiStar, HiUser } from 'react-icons/hi';
-import { TEAMS, RATINGS, ORDERS, PROFILE } from '@/service/constants/routes';
+import { HiArchive, HiEye, HiLogin, HiLogout, HiStar, HiUser } from 'react-icons/hi';
+import { TEAMS, RATINGS, ORDERS, PROFILE, SIGNUP, SIGNOUT, LOGIN } from '@/service/constants/routes';
 import { useCurrentUser } from '@/service/hooks/useCurrentUser';
 
-type TabItem = {
+export type TabItem = {
   label: string;
   icon: FC<SVGProps<SVGSVGElement>>;
   route: string;
@@ -18,13 +18,19 @@ export const useTabs = (): TabItem[] => {
       return [
         {
           label: 'Sign Up',
-          route: '/signup',
+          route: SIGNUP,
           icon: HiUser,
+        },
+        {
+          label: 'Log in',
+          route: LOGIN,
+          icon: HiLogin,
         },
       ];
     }
 
     return [
+      { label: 'Sign out', icon: HiLogout, labelColor: 'dark', route: SIGNOUT },
       { label: 'Profile', icon: HiUser, labelColor: 'dark', route: PROFILE },
       { label: 'Teams', icon: HiEye, labelColor: 'dark', route: TEAMS },
       { label: 'Ratings', icon: HiStar, route: RATINGS },

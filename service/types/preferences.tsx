@@ -12,7 +12,6 @@ export type CreatePreferencesInput = {
 export type UpdatePreferencesInput = CreatePreferencesInput;
 
 export type Preferences = {
-  id: string;
   userId: string;
   drinkType: DrinkType;
   sweetenerType?: SweetenerType;
