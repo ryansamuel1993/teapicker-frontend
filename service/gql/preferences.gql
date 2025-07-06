@@ -9,3 +9,15 @@ mutation CreatePreferences($input: CreatePreferencesInput) {
     }
   }
 }
+
+mutation UpdatePreferences($input: CreatePreferencesInput) {
+  updatePreferences(input: $input) {
+    status {
+      status
+      errorMessage
+    }
+    data {
+      ...preferencesFragment
+    }
+  }
+}

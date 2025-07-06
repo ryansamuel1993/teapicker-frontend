@@ -1,15 +1,12 @@
-// .eslintrc.js
 import { breakpoints } from './service/constants/breakpoints';
 
 module.exports = {
-  // … your existing config …
   settings: {
     'import/resolver': {
       node: {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
         moduleDirectory: ['node_modules', 'src/'],
       },
-      // if you’re using the TypeScript resolver:
       typescript: {
         alwaysTryTypes: true,
       },

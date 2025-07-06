@@ -1,6 +1,6 @@
 {
   "Common": {
-
+    "save": "Save",
     "title": "Brew buddy"
   },
   "Team": {
@@ -19,14 +19,28 @@
     "noImage": "No Image",
     "noEmail": "No email provided",
     "noContact": "No contact number",
-    "noRating": "No rating"
+    "noRating": "No rating",
+    "userNotFound": "No user found"
   },
   "Preferences":{
     "preferences": "Preferences",
     "drinkType": "Drink Type",
     "sweetenerType": "Sweetener",
+    "SWEETENER": "Sweetener",
     "sugarAmount": "Sugar Amount",
-    "milkStrength": "Milk Strength"
+    "milkStrength": "Milk Strength",
+    "notes": "Notes",
+    "COFFEE": "Coffee",
+    "TEA": "Tea",
+    "NONE": "None",
+    "HONEY": "Honey",
+    "SUGAR": "Sugar",
+    "STRONG": "Strong",
+    "MEDIUM": "Medium",
+    "LIGHT": "Light",
+    "HOTCHOCOLATE": "Hot Chocolate",
+    "GREENTEA": "Green Tea",
+    "HERBALTEA": "Herbal Tea"
   },
   "Recording": {
     "title": "Recording",
@@ -36,7 +50,7 @@
     "reset": "Reset",
     "recordNote": "Record Note",
     "transcriptPlaceholder": "Your speech will appear here...",
-    "submit": "Submit",
+    "save": "Save",
     "recording": "Recording...",
     "notRecording": "Tap to record"
   },

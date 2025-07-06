@@ -2,6 +2,7 @@ import type { FC } from 'react';
 import { useTranslations } from 'next-intl';
 import { PreferencesCard } from '../PreferencesCard';
 import { UserProfileCard } from '../users/UserCard';
+import ErrorMessage from '../Error';
 import Modal from '@/components/Modal';
 import type { User } from '@/service/types/user';
 
@@ -38,7 +39,7 @@ export const ProfileModal: FC<ProfileModalProps> = ({ isOpen, setIsOpen, user })
           )}
         </div>
       ) : (
-        <p className="items-center justify-end text-sm text-center text-red-400">{t('userNotFound')}</p>
+        <ErrorMessage>{t('userNotFound')}</ErrorMessage>
       )}
     </Modal>
   );

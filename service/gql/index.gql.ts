@@ -114,7 +114,7 @@ export enum MediaType {
 }
 
 export enum MilkStrength {
-  Liight = 'LIIGHT',
+  Light = 'LIGHT',
   Medium = 'MEDIUM',
   None = 'NONE',
   Strong = 'STRONG'
@@ -302,8 +302,8 @@ export type UpdateUserInput = {
   contactNumber?: InputMaybe<Scalars['String']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   id: Scalars['ID']['input'];
-  mediaId?: InputMaybe<Scalars['ID']['input']>;
   name: Scalars['String']['input'];
+  preferences?: InputMaybe<CreatePreferencesInput>;
   teamId?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -376,6 +376,13 @@ export type CreatePreferencesMutationVariables = Exact<{
 
 
 export type CreatePreferencesMutation = { __typename?: 'Mutation', createPreferences?: { __typename?: 'CreatePreferencesResponse', status: { __typename?: 'ResponseStatus', status: string, errorMessage?: string }, data?: { __typename?: 'Preferences', userId: string, drinkType: DrinkType, sweetenerType?: SweetenerType, sugarAmount?: number, milkStrength?: MilkStrength, notes?: string } } };
+
+export type UpdatePreferencesMutationVariables = Exact<{
+  input?: InputMaybe<CreatePreferencesInput>;
+}>;
+
+
+export type UpdatePreferencesMutation = { __typename?: 'Mutation', updatePreferences?: { __typename?: 'UpdatePreferencesResponse', status: { __typename?: 'ResponseStatus', status: string, errorMessage?: string }, data?: { __typename?: 'Preferences', userId: string, drinkType: DrinkType, sweetenerType?: SweetenerType, sugarAmount?: number, milkStrength?: MilkStrength, notes?: string } } };
 
 export type GetRatingByIdQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -743,6 +750,45 @@ export function useCreatePreferencesMutation(baseOptions?: Apollo.MutationHookOp
 export type CreatePreferencesMutationHookResult = ReturnType<typeof useCreatePreferencesMutation>;
 export type CreatePreferencesMutationResult = Apollo.MutationResult<CreatePreferencesMutation>;
 export type CreatePreferencesMutationOptions = Apollo.BaseMutationOptions<CreatePreferencesMutation, CreatePreferencesMutationVariables>;
+export const UpdatePreferencesDocument = gql`
+    mutation UpdatePreferences($input: CreatePreferencesInput) {
+  updatePreferences(input: $input) {
+    status {
+      status
+      errorMessage
+    }
+    data {
+      ...preferencesFragment
+    }
+  }
+}
+    ${PreferencesFragmentFragmentDoc}`;
+export type UpdatePreferencesMutationFn = Apollo.MutationFunction<UpdatePreferencesMutation, UpdatePreferencesMutationVariables>;
+
+/**
+ * __useUpdatePreferencesMutation__
+ *
+ * To run a mutation, you first call `useUpdatePreferencesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdatePreferencesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updatePreferencesMutation, { data, loading, error }] = useUpdatePreferencesMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdatePreferencesMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePreferencesMutation, UpdatePreferencesMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdatePreferencesMutation, UpdatePreferencesMutationVariables>(UpdatePreferencesDocument, options);
+      }
+export type UpdatePreferencesMutationHookResult = ReturnType<typeof useUpdatePreferencesMutation>;
+export type UpdatePreferencesMutationResult = Apollo.MutationResult<UpdatePreferencesMutation>;
+export type UpdatePreferencesMutationOptions = Apollo.BaseMutationOptions<UpdatePreferencesMutation, UpdatePreferencesMutationVariables>;
 export const GetRatingByIdDocument = gql`
     query GetRatingById($id: ID!) {
   getRatingById(id: $id) {

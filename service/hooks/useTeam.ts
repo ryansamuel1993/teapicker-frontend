@@ -53,8 +53,6 @@ export const useTeams = () => {
     [teams],
   );
 
-  console.log(teams);
-
   return {
     teams,
     getTeamById,

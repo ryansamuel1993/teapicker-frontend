@@ -37,14 +37,14 @@ export const PlayModal = ({ isOpen, setIsOpen, team, loser, playMatch, onSubmit,
 
   return (
     <Modal
-      withCloseButton={false}
+      withCloseButton
+      showBackButton={false}
       isOpen={isOpen}
       setIsOpen={setIsOpen}
       title="Play"
       fullHeight={isMobile}
-      contentClassName="p-2 md:h-4/5"
+      contentClassName="p-2 sm:h-full md:h-4/5"
       size="xl"
-      showBackButton
       actions={
         !isPlaying && (
           <Button className="ml-auto border" onClick={onSubmit}>

@@ -58,7 +58,7 @@ export const OrderModal = ({
             <HiMicrophone className="text-lg" />
             Record note
           </Button>
-          <Button className="flex items-center gap-2 border " onClick={handleSubmit}>
+          <Button disabled={itemCount === 0} className="border" onClick={handleSubmit}>
             Submit Order ({itemCount} item{itemCount > 1 ? 's' : ''})
           </Button>
         </div>

@@ -12,22 +12,18 @@ import { RecordingModal } from '@/components/modals/RecordingModal';
 
 const Page = () => {
   const { teams, isLoading } = useTeams();
+  const [team, selectTeam] = useState<Team>();
+  const [notes, setNotes] = useState<string | undefined>(undefined);
   const { menuItems, addItem, submitOrder, clearBasket, total, itemCount, removeItem } = useOrder();
   const { loser, isPlaying, playMatch } = usePlay();
 
-  const [team, selectTeam] = useState<Team>();
-  const [notes, setNotes] = useState<string | undefined>(undefined);
   const [isRecordingModalOpen, setIsRecordingModalOpen] = useState(false);
-  const [isOrderModalOpen, setIsOrderModalOpen] = useState(true);
+  const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
   const [isTeamModalOpen, setIsTeamModalOpen] = useState(false);
   const [isPlayModalOpen, setIsPlayModalOpen] = useState(false);
 
   const handlePlay = useCallback(() => {
     setIsOrderModalOpen(true);
-  }, []);
-
-  const handleRecordNotes = useCallback((reocordedNote: string) => {
-    setNotes(reocordedNote);
   }, []);
 
   const handleOrderSubmit = async () => {
@@ -48,7 +44,7 @@ const Page = () => {
       submitOrder(team.id, loser, notes);
       setIsPlayModalOpen(false);
     }
-  }, [team, loser, notes, submitOrder]);
+  }, [team, loser, submitOrder, notes]);
 
   return (
     <BaseLayout>
@@ -56,11 +52,7 @@ const Page = () => {
         <div className="-translate-y-[80%]">
           <PlayButton onClick={handlePlay} />
         </div>
-        <RecordingModal
-          isOpen={isRecordingModalOpen}
-          setIsOpen={setIsRecordingModalOpen}
-          onRecording={handleRecordNotes}
-        />
+        <RecordingModal isOpen={isRecordingModalOpen} setIsOpen={setIsRecordingModalOpen} onRecorded={setNotes} />
         <OrderModal
           isOpen={isOrderModalOpen}
           setIsOpen={setIsOrderModalOpen}

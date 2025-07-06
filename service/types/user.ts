@@ -1,4 +1,4 @@
-import { Preferences } from './preferences';
+import { CreatePreferencesInput, Preferences } from './preferences';
 
 export type User = {
   id: string;
@@ -18,6 +18,7 @@ export type UpdateUserInput = {
   email?: string;
   teamId?: string;
   contactNumber?: string;
+  preferences?: CreatePreferencesInput;
 };
 
 export type CreateUserInput = Omit<UpdateUserInput, 'id'>;
