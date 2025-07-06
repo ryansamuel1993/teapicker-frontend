@@ -46,7 +46,7 @@ export const useOrder = () => {
   }, [basket]);
 
   const submitOrder = useCallback(
-    async (teamId: string, userId: string) => {
+    async (teamId: string, userId: string, notes: string | undefined) => {
       if (basket.length === 0) {
         return;
       }
@@ -57,7 +57,7 @@ export const useOrder = () => {
             userId,
             teamId,
             orderType: gql.OrderType.External,
-            notes: '',
+            notes: notes ?? '',
             items: basket.map((item) => ({
               itemId: item.id,
               quantity: item.quantity,

@@ -28,6 +28,18 @@
     "sugarAmount": "Sugar Amount",
     "milkStrength": "Milk Strength"
   },
+  "Recording": {
+    "title": "Recording",
+    "unsupported": "Your browser does not support speech recognition.",
+    "start": "Start Recording",
+    "stop": "Stop Recording",
+    "reset": "Reset",
+    "recordNote": "Record Note",
+    "transcriptPlaceholder": "Your speech will appear here...",
+    "submit": "Submit",
+    "recording": "Recording...",
+    "notRecording": "Tap to record"
+  },
   "Login":{
     "title": "Log in",
     "login": "Login",
@@ -35,7 +47,6 @@
     "validation": {
       "emailInvalid": "Please enter a valid email address."
     }
-
   },
   "Signup": {
     "title": "Create an Account",

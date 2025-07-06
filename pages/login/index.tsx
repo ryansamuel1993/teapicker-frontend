@@ -8,10 +8,9 @@ import { HOME } from '@/service/constants/routes';
 
 const Page = () => {
   const router = useRouter();
-  const { login, user, isLoading, error } = useUser();
+  const { login, user, isLoading } = useUser();
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(true);
-  const [authError, setAuthError] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     if (currentUser) {
@@ -29,8 +28,6 @@ const Page = () => {
       setIsLoginModalOpen(false);
       router.push(HOME);
     }
-
-    setAuthError(error);
   };
 
   return (
@@ -40,7 +37,6 @@ const Page = () => {
           isOpen={isLoginModalOpen}
           setIsOpen={setIsLoginModalOpen}
           onLogin={handleLogin}
-          error={authError}
           isLoading={isLoading}
         />
       </BaseLayout.MainContent>

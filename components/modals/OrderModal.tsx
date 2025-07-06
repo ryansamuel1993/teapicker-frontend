@@ -1,4 +1,5 @@
 import { Button, Card } from 'flowbite-react';
+import { HiMicrophone } from 'react-icons/hi';
 import Modal from '@/components/Modal';
 import { useIsMobileBreakpoint } from '@/service/hooks/useIsMobileBreakpoint';
 import { OrderItem } from '@/service/types/order';
@@ -16,6 +17,7 @@ type OrderModalProps = {
   addItem: (item: OrderItem) => void;
   removeItem: (itemId: string) => void;
   onSubmit: () => void;
+  onRecord: (record: boolean) => void;
   clearBasket: () => void;
   total: number;
   itemCount: number;
@@ -28,6 +30,7 @@ export const OrderModal = ({
   addItem,
   removeItem,
   onSubmit,
+  onRecord,
   total,
   itemCount,
 }: OrderModalProps) => {
@@ -40,7 +43,7 @@ export const OrderModal = ({
 
   return (
     <Modal
-      withCloseButton={false}
+      withCloseButton
       fullHeight={isMobile}
       contentClassName="md:h-[90%]"
       noBodyPadding
@@ -48,6 +51,18 @@ export const OrderModal = ({
       setIsOpen={setIsOpen}
       title="Create Order"
       bodyClassName="overflow-y-auto slim-scrollbar"
+      showBackButton={false}
+      actions={
+        <div className="flex flex-row items-end gap-2 ml-auto">
+          <Button className="flex items-center gap-2 border" onClick={() => onRecord(true)}>
+            <HiMicrophone className="text-lg" />
+            Record note
+          </Button>
+          <Button className="flex items-center gap-2 border " onClick={handleSubmit}>
+            Submit Order ({itemCount} item{itemCount > 1 ? 's' : ''})
+          </Button>
+        </div>
+      }
       size="xl"
     >
       {items.length === 0 && <p className="text-sm text-center text-gray-400">No items available.</p>}
@@ -76,11 +91,8 @@ export const OrderModal = ({
           </div>
 
           {itemCount > 0 && (
-            <Card className="pt-4 mt-4 text-center border-t shadow-none">
+            <Card className="justify-center h-16 mt-4 text-center border-t shadow-none">
               <p className="text-sm font-medium text-white">Total: £{total.toFixed(2)}</p>
-              <Button className="w-full mt-2 border" onClick={handleSubmit}>
-                Submit Order ({itemCount} item{itemCount > 1 ? 's' : ''})
-              </Button>
             </Card>
           )}
         </>

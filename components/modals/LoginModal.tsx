@@ -11,10 +11,9 @@ type LoginModalProps = {
   setIsOpen: (isOpen: boolean) => void;
   onLogin: (email: string) => void;
   isLoading: boolean;
-  error?: string;
 };
 
-export const LoginModal = ({ isOpen, setIsOpen, onLogin, isLoading, error }: LoginModalProps) => {
+export const LoginModal = ({ isOpen, setIsOpen, onLogin, isLoading }: LoginModalProps) => {
   const t = useTranslations('Login');
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState<string | undefined>(undefined);
@@ -55,10 +54,8 @@ export const LoginModal = ({ isOpen, setIsOpen, onLogin, isLoading, error }: Log
           color={emailError ? 'failure' : undefined}
           required
         />
-        {emailError && <span className="text-sm text-red-600">{emailError}</span>}
+        {emailError && <ErrorMessage>{emailError}</ErrorMessage>}
       </div>
-
-      {error && <ErrorMessage>{error}</ErrorMessage>}
     </Modal>
   );
 };

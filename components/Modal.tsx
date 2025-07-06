@@ -75,11 +75,11 @@ const theme = ({
       popup: 'pt-0',
     },
     header: {
-      base: classNames('flex items-center justify-between rounded-t-3xl py-4 px-4', headerClassName),
+      base: classNames('flex items-center justify-center rounded-t-3xl py-4 px-4', headerClassName),
       popup: 'border-b-0 p-2',
-      title: 'text-body font-medium text-white',
+      title: classNames('text-body font-medium text-white', withCloseButton && 'ml-auto'),
       close: {
-        base: `ml-auto inline-flex items-center rounded-3xl bg-transparent p-1.5 text-sm text-white hover:bg-gray-200 hover:text-gray-900 ${
+        base: `mr-0 inline-flex items-center rounded-3xl bg-transparent p-1.5 text-sm text-white hover:bg-gray-200 hover:text-gray-900 ${
           !withCloseButton && 'hidden'
         }`,
         icon: 'size-4',
@@ -148,7 +148,7 @@ const Modal: FC<ModalProps> = ({
             </div>
           )}
 
-          <ModalHeader className="text-base font-medium text-center truncate">{title}</ModalHeader>
+          <ModalHeader className="w-full text-base font-medium text-center truncate">{title}</ModalHeader>
         </div>
       )}
 

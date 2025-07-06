@@ -9,7 +9,7 @@ import { Team } from '@/service/types/team';
 type PlayModalProps = {
   isOpen: boolean;
   setIsOpen: (state: boolean) => void;
-  onSubmit: (teamId: string, loser: string) => void;
+  onSubmit: () => void;
   playMatch: (input: PlayEntryInput) => Promise<string | undefined>;
   team: Team;
   loser: string | undefined;
@@ -35,14 +35,6 @@ export const PlayModal = ({ isOpen, setIsOpen, team, loser, playMatch, onSubmit,
     void playMatch(play);
   }, [loser, play, playMatch]);
 
-  const handleSubmit = async () => {
-    if (loser && team.id) {
-      onSubmit(team.id, loser);
-    }
-
-    setIsOpen(false);
-  };
-
   return (
     <Modal
       withCloseButton={false}
@@ -55,7 +47,7 @@ export const PlayModal = ({ isOpen, setIsOpen, team, loser, playMatch, onSubmit,
       showBackButton
       actions={
         !isPlaying && (
-          <Button className="ml-auto border" onClick={handleSubmit}>
+          <Button className="ml-auto border" onClick={onSubmit}>
             Submit
           </Button>
         )

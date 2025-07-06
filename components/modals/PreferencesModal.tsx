@@ -1,4 +1,4 @@
-import { PreferenceItems } from './preferences.tsx/PreferenceItem';
+import { PreferenceItems } from '../preferences.tsx/PreferenceItem';
 import Modal from '@/components/Modal';
 import { Preferences } from '@/service/types/preferences';
 

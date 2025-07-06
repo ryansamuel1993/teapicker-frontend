@@ -1,4 +1,7 @@
-import { PiCoffeeFill, MdOutlineWaterDrop, GiMilkCarton, GiSugarCane, BiSolidMessageDetail } from 'react-icons/all';
+import { PiCoffeeFill } from 'react-icons/pi';
+import { MdOutlineWaterDrop } from 'react-icons/md';
+import { GiMilkCarton, GiSugarCane } from 'react-icons/gi';
+import { BiSolidMessageDetail } from 'react-icons/bi';
 import { Preferences } from '@/service/types/preferences';
 
 type PreferenceItemProps = {
