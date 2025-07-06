@@ -5,7 +5,7 @@ const Page = () => {
     <>
       <BaseLayout>
         <BaseLayout.MainContent className="flex flex-col items-center justify-center min-h-screen p-2">
-          <p></p>
+          <p />
         </BaseLayout.MainContent>
       </BaseLayout>
     </>

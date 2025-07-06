@@ -1,5 +1,3 @@
-
-
 import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink } from '@apollo/client';
 import { ReactNode, useMemo } from 'react';
 import env from '../../env.json';

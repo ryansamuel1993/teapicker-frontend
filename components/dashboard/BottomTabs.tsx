@@ -21,6 +21,10 @@ export const BottomTabs = () => {
   }
 
   const handleClick = (tab: TabItem) => {
+    if (tab.disabled) {
+      return;
+    }
+
     if (tab.route === SIGNOUT) {
       removeCurrentUser();
       localStorage.removeItem('authToken');
@@ -39,16 +43,24 @@ export const BottomTabs = () => {
 
           return (
             <li key={tab.route}>
-              <button onClick={() => handleClick(tab)} className="relative flex flex-col items-center justify-center">
+              <button
+                onClick={() => handleClick(tab)}
+                disabled={tab.disabled}
+                title={tab.disabled && tab.toolTip ? tab.toolTip : ''}
+                className={classNames('relative flex flex-col items-center justify-center', {
+                  'opacity-50 cursor-not-allowed': tab.disabled,
+                })}
+              >
                 <Icon
                   className={classNames('h-5 w-5', {
-                    'text-blue-600': isActive,
-                    'text-gray-400': !isActive,
+                    'text-blue-600': isActive && !tab.disabled,
+                    'text-gray-400': !isActive || tab.disabled,
                   })}
                 />
                 <span
                   className={classNames('text-xs mt-1', {
-                    'text-blue-600': isActive,
+                    'text-blue-600': isActive && !tab.disabled,
+                    'text-gray-400': tab.disabled,
                   })}
                 >
                   {tab.label}

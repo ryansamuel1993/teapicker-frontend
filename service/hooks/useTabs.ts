@@ -8,6 +8,8 @@ export type TabItem = {
   icon: FC<SVGProps<SVGSVGElement>>;
   route: string;
   labelColor?: string;
+  disabled?: boolean;
+  toolTip?: string;
 };
 
 export const useTabs = (): TabItem[] => {
@@ -34,8 +36,20 @@ export const useTabs = (): TabItem[] => {
       { label: 'Profile', icon: HiUser, labelColor: 'dark', route: PROFILE },
       { label: 'Teams', icon: HiEye, labelColor: 'dark', route: TEAMS },
       { label: 'Preferences', icon: HiCake, labelColor: 'dark', route: PREFERENCES },
-      { label: 'Ratings', icon: HiStar, route: RATINGS },
-      { label: 'Orders', icon: HiArchive, route: ORDERS },
+      {
+        label: 'Ratings',
+        icon: HiStar,
+        route: RATINGS,
+        disabled: true,
+        tooltip: 'Coming soon',
+      },
+      {
+        label: 'Orders',
+        icon: HiArchive,
+        route: ORDERS,
+        disabled: true,
+        tooltip: 'Coming soon',
+      },
     ];
   }, [currentUser]);
 };

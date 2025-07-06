@@ -27,6 +27,10 @@ export const SideBar: FC = () => {
   }
 
   const handleTabClick = (tab: TabItem) => {
+    if (tab.disabled) {
+      return;
+    }
+
     if (tab.route === SIGNOUT) {
       removeCurrentUser();
       localStorage.removeItem('authToken');
@@ -42,14 +46,22 @@ export const SideBar: FC = () => {
         <SidebarItems>
           <SidebarItemGroup className="-mt-4">
             {tabs.map((tab) => (
-              <SidebarItem
+              <div
                 key={tab.label}
-                onClick={() => handleTabClick(tab)}
-                icon={tab.icon}
-                labelColor={tab.labelColor}
+                className={classNames('relative group', {
+                  'cursor-not-allowed opacity-50': tab.disabled,
+                })}
               >
-                {tab.label}
-              </SidebarItem>
+                <SidebarItem onClick={() => handleTabClick(tab)} icon={tab.icon} labelColor={tab.labelColor}>
+                  {tab.label}
+                </SidebarItem>
+
+                {tab.disabled && tab.toolTip && (
+                  <div className="absolute z-10 px-2 py-1 ml-2 text-xs text-white transition-opacity -translate-y-1/2 bg-gray-800 rounded shadow-lg opacity-0 left-full top-1/2 w-max whitespace-nowrap group-hover:opacity-100">
+                    {tab.toolTip}
+                  </div>
+                )}
+              </div>
             ))}
           </SidebarItemGroup>
         </SidebarItems>
