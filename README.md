@@ -15,9 +15,24 @@ State Management:   React Hooks + Context
 Build Tool:         Next.js (App Router or Pages Router)  
 Package Manager:    npm
 
+## Test account
+
+<ryan_samuel1993@hotmail.com>
+
+## 🛠️ Note on Flowbite
+
+npm run flowbite:fix
+
 ## 🚀 Getting Started
 
 1. Install dependencies:
 
    ```bash
    npm install
+
+2. Generate:
+
+   ```bash
+   npm run codegen
+
+ fix notwes
