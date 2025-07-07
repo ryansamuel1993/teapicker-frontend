@@ -1,6 +1,6 @@
 import { Button } from 'flowbite-react';
 import { LoadingSpinner } from '../Spinner';
-import ErrorMessage from '../Error';
+import { ErrorMessage } from '../Error';
 import Modal from '@/components/Modal';
 import { Team } from '@/service/types/team';
 

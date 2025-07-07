@@ -1,7 +1,7 @@
 import { Button } from 'flowbite-react';
 import classNames from 'classnames';
 import { useTranslations } from 'next-intl';
-import ErrorMessage from '../Error';
+import { ErrorMessage } from '../Error';
 import Modal from '@/components/Modal';
 import { User } from '@/service/types/user';
 

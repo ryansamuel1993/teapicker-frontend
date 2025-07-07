@@ -2,7 +2,7 @@ import type { FC } from 'react';
 import { useTranslations } from 'next-intl';
 import { PreferencesCard } from '../PreferencesCard';
 import { UserProfileCard } from '../users/UserCard';
-import ErrorMessage from '../Error';
+import { ErrorMessage } from '../Error';
 import Modal from '@/components/Modal';
 import type { User } from '@/service/types/user';
 

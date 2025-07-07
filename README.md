@@ -35,4 +35,3 @@ npm run flowbite:fix
    ```bash
    npm run codegen
 
- fix notwes

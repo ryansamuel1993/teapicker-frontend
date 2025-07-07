@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react';
 import { Button, Textarea } from 'flowbite-react';
 import { HiMicrophone, HiPause, HiRewind } from 'react-icons/hi';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
-import ErrorMessage from '../Error';
+import { ErrorMessage } from '../Error';
 
 interface SpeechToTextProps {
   setRecording: (transcript: string) => void;

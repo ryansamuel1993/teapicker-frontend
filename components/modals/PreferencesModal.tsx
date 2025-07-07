@@ -1,4 +1,4 @@
-import ErrorMessage from '../Error';
+import { ErrorMessage } from '../Error';
 import { PreferencesCard } from '../PreferencesCard';
 import { SaveButton } from '../button/SaveButton';
 import Modal from '@/components/Modal';

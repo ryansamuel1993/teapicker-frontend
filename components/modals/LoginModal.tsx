@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button, Label, TextInput } from 'flowbite-react';
 import { useTranslations } from 'next-intl';
 import { LoadingSpinner } from '../Spinner';
-import ErrorMessage from '../Error';
+import { ErrorMessage } from '../Error';
 import Modal from '@/components/Modal';
 import { validateEmail } from '@/service/utils/validators';
 
