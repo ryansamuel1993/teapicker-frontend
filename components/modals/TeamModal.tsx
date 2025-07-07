@@ -3,7 +3,6 @@ import { LoadingSpinner } from '../Spinner';
 import ErrorMessage from '../Error';
 import Modal from '@/components/Modal';
 import { Team } from '@/service/types/team';
-import { useIsMobileBreakpoint } from '@/service/hooks/useIsMobileBreakpoint';
 
 type TeamModalProps = {
   isOpen: boolean;
@@ -14,8 +13,6 @@ type TeamModalProps = {
 };
 
 export const TeamModal = ({ isOpen, setIsOpen, teams, onSelect, isLoading }: TeamModalProps) => {
-  const isMobile = useIsMobileBreakpoint();
-
   const handleSelect = (team: Team) => {
     onSelect(team);
     setIsOpen(false);

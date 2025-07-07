@@ -2,7 +2,6 @@ import { Button } from 'flowbite-react';
 import { useEffect, useMemo } from 'react';
 import Modal from '../Modal';
 import { PlayGrid } from '../PlayGrid';
-import { useIsMobileBreakpoint } from '@/service/hooks/useIsMobileBreakpoint';
 import { PlayEntryInput } from '@/service/types/play';
 import { Team } from '@/service/types/team';
 
@@ -18,7 +17,6 @@ type PlayModalProps = {
 
 export const PlayModal = ({ isOpen, setIsOpen, team, loser, playMatch, onSubmit, isPlaying }: PlayModalProps) => {
   const { members } = team;
-  const isMobile = useIsMobileBreakpoint();
 
   const play: PlayEntryInput = useMemo(
     () => ({

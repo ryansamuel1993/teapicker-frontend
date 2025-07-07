@@ -9,10 +9,12 @@
   },
   "User": {
     "email": "Email",
-    "contact": "Contact"
+    "contact": "Contact",
+     "noRating": "No rating"
   },
   "UserModal": {
-    "title": "Users"
+    "title": "Users",
+    "noUser": "No users available."
   },
   "Profile": {
     "title": "Profile",

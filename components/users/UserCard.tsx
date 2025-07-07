@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Card } from 'flowbite-react';
-import { useTranslation } from 'react-i18next';
+import { useTranslations } from 'next-intl';
 import { UserAvatar } from '@/components/users/UserAvatar';
 import { User } from '@/service/types/user';
 
@@ -9,7 +9,7 @@ type UserProfileCardProps = {
 };
 
 export const UserProfileCard: FC<UserProfileCardProps> = ({ user }) => {
-  const { t } = useTranslation();
+  const t = useTranslations('User');
 
   return (
     <Card className="w-full max-w-sm mx-auto text-center">

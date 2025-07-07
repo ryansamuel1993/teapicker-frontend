@@ -3,7 +3,6 @@ import { useTranslations } from 'next-intl';
 import { SpeechToText } from '../button/SpeechToText';
 import { SaveButton } from '../button/SaveButton';
 import Modal from '@/components/Modal';
-import { useIsMobileBreakpoint } from '@/service/hooks/useIsMobileBreakpoint';
 
 type RecordingModalProps = {
   isOpen: boolean;
@@ -12,7 +11,6 @@ type RecordingModalProps = {
 };
 
 export const RecordingModal = ({ isOpen, setIsOpen, onRecorded }: RecordingModalProps) => {
-  const isMobile = useIsMobileBreakpoint();
   const t = useTranslations('Recording');
   const [note, setNote] = useState('');
 

@@ -1,7 +1,6 @@
 import { Button, Card } from 'flowbite-react';
 import { HiMicrophone } from 'react-icons/hi';
 import Modal from '@/components/Modal';
-import { useIsMobileBreakpoint } from '@/service/hooks/useIsMobileBreakpoint';
 import { OrderItem } from '@/service/types/order';
 
 type Item = {
@@ -34,7 +33,6 @@ export const OrderModal = ({
   total,
   itemCount,
 }: OrderModalProps) => {
-
   const handleSubmit = () => {
     onSubmit();
     setIsOpen(false);

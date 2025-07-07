@@ -1,6 +1,7 @@
 import { Button } from 'flowbite-react';
 import classNames from 'classnames';
 import { useTranslations } from 'next-intl';
+import ErrorMessage from '../Error';
 import Modal from '@/components/Modal';
 import { User } from '@/service/types/user';
 
@@ -12,12 +13,12 @@ type UserModalProps = {
 };
 
 export const UserModal = ({ isOpen, setIsOpen, users, onSelect }: UserModalProps) => {
+  const t = useTranslations('UserModal');
+
   const handleSelect = (user: User) => {
     onSelect(user);
     setIsOpen(false);
   };
-
-  const t = useTranslations('UserModal');
 
   return (
     <Modal
@@ -43,7 +44,7 @@ export const UserModal = ({ isOpen, setIsOpen, users, onSelect }: UserModalProps
             </Button>
           ))
         ) : (
-          <p className="text-sm italic text-gray-400">No users available.</p>
+          <ErrorMessage className="text-sm italic text-gray-400">{t('noUser')}</ErrorMessage>
         )}
       </div>
     </Modal>
