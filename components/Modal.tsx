@@ -130,7 +130,7 @@ const Modal: FC<ModalProps> = ({
         bodyClassName,
         confirmation,
         noBodyPadding,
-        fullHeight,
+        fullHeight: fullHeight ?? isMobile,
         headerClassName,
         contentClassName,
         withCloseButton,

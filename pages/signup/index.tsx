@@ -11,7 +11,7 @@ const Page = () => {
   const router = useRouter();
   const { createUser, isLoading, error } = useUser();
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
-  const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
+  const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(true);
   const [authError, setAuthError] = useState<string | undefined>(undefined);
 
   useEffect(() => {
@@ -20,8 +20,6 @@ const Page = () => {
 
       return;
     }
-
-    setIsSignUpModalOpen(false);
   }, [currentUser, router]);
 
   const handleUserSave = async (user: CreateUserInput) => {

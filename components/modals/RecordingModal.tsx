@@ -30,7 +30,6 @@ export const RecordingModal = ({ isOpen, setIsOpen, onRecorded }: RecordingModal
       noBodyPadding
       withCloseButton
       showBackButton
-      fullHeight={isMobile}
       contentClassName="max-sm:flex max-sm:flex-col max-sm:justify-end md:h-3/4"
       actions={<SaveButton onClick={handleSave} />}
     >

@@ -42,7 +42,6 @@ export const PlayModal = ({ isOpen, setIsOpen, team, loser, playMatch, onSubmit,
       isOpen={isOpen}
       setIsOpen={setIsOpen}
       title="Play"
-      fullHeight={isMobile}
       contentClassName="p-2 sm:h-full md:h-4/5"
       size="xl"
       actions={

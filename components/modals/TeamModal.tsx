@@ -1,5 +1,6 @@
 import { Button } from 'flowbite-react';
 import { LoadingSpinner } from '../Spinner';
+import ErrorMessage from '../Error';
 import Modal from '@/components/Modal';
 import { Team } from '@/service/types/team';
 import { useIsMobileBreakpoint } from '@/service/hooks/useIsMobileBreakpoint';
@@ -23,8 +24,7 @@ export const TeamModal = ({ isOpen, setIsOpen, teams, onSelect, isLoading }: Tea
   return (
     <Modal
       withCloseButton={false}
-      fullHeight={isMobile}
-      contentClassName="p-2 md:h-3/4"
+      contentClassName="md:h-1/2"
       isOpen={isOpen}
       setIsOpen={setIsOpen}
       title="Team"
@@ -32,7 +32,7 @@ export const TeamModal = ({ isOpen, setIsOpen, teams, onSelect, isLoading }: Tea
     >
       {isLoading && <LoadingSpinner />}
 
-      {!isLoading && teams.length === 0 && <p className="text-sm text-center text-gray-400">No teams available.</p>}
+      {!isLoading && teams.length === 0 && <ErrorMessage>No teams available.</ErrorMessage>}
 
       {!isLoading && teams.length > 0 && (
         <div className="flex flex-col gap-2">

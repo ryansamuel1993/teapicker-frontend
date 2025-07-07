@@ -34,7 +34,6 @@ export const OrderModal = ({
   total,
   itemCount,
 }: OrderModalProps) => {
-  const isMobile = useIsMobileBreakpoint();
 
   const handleSubmit = () => {
     onSubmit();
@@ -44,7 +43,6 @@ export const OrderModal = ({
   return (
     <Modal
       withCloseButton
-      fullHeight={isMobile}
       contentClassName="md:h-[90%]"
       noBodyPadding
       isOpen={isOpen}

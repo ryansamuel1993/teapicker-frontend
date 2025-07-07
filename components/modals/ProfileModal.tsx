@@ -6,8 +6,6 @@ import ErrorMessage from '../Error';
 import Modal from '@/components/Modal';
 import type { User } from '@/service/types/user';
 
-import { useIsMobileBreakpoint } from '@/service/hooks/useIsMobileBreakpoint';
-
 type ProfileModalProps = {
   isOpen: boolean;
   setIsOpen: (state: boolean) => void;
@@ -15,7 +13,6 @@ type ProfileModalProps = {
 };
 
 export const ProfileModal: FC<ProfileModalProps> = ({ isOpen, setIsOpen, user }) => {
-  const isMobile = useIsMobileBreakpoint();
   const t = useTranslations('Profile');
 
   return (
@@ -24,7 +21,6 @@ export const ProfileModal: FC<ProfileModalProps> = ({ isOpen, setIsOpen, user })
       setIsOpen={setIsOpen}
       title={t('title')}
       withCloseButton={false}
-      fullHeight={isMobile}
       bodyClassName="h-96"
       size="md"
     >
@@ -35,7 +31,9 @@ export const ProfileModal: FC<ProfileModalProps> = ({ isOpen, setIsOpen, user })
           {user.preferences ? (
             <PreferencesCard preferences={user.preferences} />
           ) : (
-            <p className="text-sm italic text-gray-500">{t('noPreferences')}</p>
+            <ErrorMessage className="text-sm italic text-gray-500 bg-transparent border-none">
+              {t('noPreferences')}
+            </ErrorMessage>
           )}
         </div>
       ) : (

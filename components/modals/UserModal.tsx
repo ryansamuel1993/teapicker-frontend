@@ -25,9 +25,8 @@ export const UserModal = ({ isOpen, setIsOpen, users, onSelect }: UserModalProps
       isOpen={isOpen}
       setIsOpen={setIsOpen}
       title={t('title')}
-      fullHeight
-      contentClassName="p-2"
-      size="xl"
+      contentClassName="md:h-1/2"
+      size="md"
     >
       <div className="flex flex-col gap-2 text-center">
         {users && users.length > 0 ? (
