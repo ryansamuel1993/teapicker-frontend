@@ -19,7 +19,7 @@ export const PreferencesModal = ({ isOpen, setIsOpen, preferences, setPreference
       setIsOpen={setIsOpen}
       title="Preferences"
       size="md"
-      contentClassName="h-3/5"
+      contentClassName="md:h-3/5"
       actions={<SaveButton onClick={onSave} />}
     >
       {preferences ? (

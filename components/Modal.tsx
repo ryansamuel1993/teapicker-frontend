@@ -57,6 +57,7 @@ const theme = ({
     content: {
       base: classNames(
         'relative md:h-full w-full sm:p-4 md:h-auto flex md:items-center mt-auto md:mt-0',
+        { 'p-0': noBodyPadding },
         contentClassName,
       ),
       inner: classNames(
@@ -129,7 +130,7 @@ const Modal: FC<ModalProps> = ({
       theme={theme({
         bodyClassName,
         confirmation,
-        noBodyPadding,
+        noBodyPadding: fullHeight ?? isMobile,
         fullHeight: fullHeight ?? isMobile,
         headerClassName,
         contentClassName,

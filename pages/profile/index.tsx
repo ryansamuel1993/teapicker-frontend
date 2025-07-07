@@ -6,8 +6,9 @@ import { useCurrentUser } from '@/service/hooks/useCurrentUser';
 import { HOME } from '@/service/constants/routes';
 
 const Page = () => {
-  const currentUser = useCurrentUser();
   const router = useRouter();
+  const currentUser = useCurrentUser();
+
   const [isModalOpen, setIsModalOpen] = useState(true);
 
   useEffect(() => {
